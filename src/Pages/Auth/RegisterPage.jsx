@@ -1,6 +1,5 @@
 import React from "react";
-import RegisterLayout from "../../LAYOUT/Auth/RegisterLayour";
-
+import RegisterLayout from "@/Layout/Auth/RegisterLayour";
 const RegisterPage = () => {
   return <RegisterLayout />;
 };

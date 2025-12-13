@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import api from "../../API/axiosInstance";
 import { useGoogleLogin } from "@react-oauth/google";
 import toast from "react-hot-toast";
+import { FcGoogle } from "react-icons/fc";
+import { googleLoginApi, loginUserApi } from "@/API/userAPI";
 
 const LoginLayout = () => {
   const [email, setEmail] = useState("");
@@ -13,24 +15,22 @@ const LoginLayout = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
-    const loginWithGoogle = useGoogleLogin({
+
+  const loginWithGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        const res = await api.post("/auth/google", {
-          token: tokenResponse.access_token,
-        });
+        const data = await googleLoginApi(tokenResponse.access_token)
 
         dispatch({
           type: "SET_USER",
           payload: {
-            user: res.data.user,
-            accessToken: res.data.accessToken,
+            user: data.user,
+            accessToken: data.accessToken,
           },
         });
 
         toast.success("Welcome back 🤎");
-        navigate("/");
+        navigate("/home");
       } catch (error) {
         console.error(error);
         toast.error("Google login failed");
@@ -41,27 +41,26 @@ const LoginLayout = () => {
     },
   });
 
-  
   const submitLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const res = await api.post("/auth/login", { email, password });
+      const data=await loginUserApi(email,password);
 
-      // setting user state to redux
       dispatch({
         type: "SET_USER",
         payload: {
-          user: res.data.user,
-          accessToken: res.data.accessToken,
+          user: data.user,
+          accessToken: data.accessToken,
         },
       });
 
       navigate("/");
     } catch (err) {
       console.error("Login error:", err.response?.data || err.message);
-      alert(err.response?.data?.message || "Login failed");
+      toast.error(err.response?.data?.message || "Login failed");
+      setPassword("");
     } finally {
       setIsLoading(false);
     }
@@ -72,6 +71,7 @@ const LoginLayout = () => {
       HeadContent={`Sign in <br /> to Leather Haven`}
       mainContent={
         <>
+          {/* Brand block */}
           <div className="space-y-2 mt-6 text-center md:text-left md:ml-[100px]">
             <h2 className="font-serif text-4xl md:text-5xl font-light tracking-tight text-foreground">
               LEATHER
@@ -84,9 +84,31 @@ const LoginLayout = () => {
             </p>
           </div>
 
+          {/* Google login button */}
+          <div className="w-full max-w-[340px] mx-auto md:mx-0 md:ml-[100px] mt-6">
+            <button
+              type="button"
+              onClick={() => loginWithGoogle()}
+              className="flex items-center justify-center gap-2 w-full border border-border/50 bg-card hover:bg-muted/60 text-foreground text-sm py-2.5 rounded-lg transition-all"
+            >
+              <FcGoogle size={22} />
+              <span className="tracking-wide">Continue with Google</span>
+            </button>
+          </div>
+
+          {/* Divider */}
+          <div className="flex items-center justify-center mt-4 mb-2 w-full max-w-[340px] mx-auto md:mx-0 md:ml-[100px]">
+            <div className="flex-1 h-px bg-border/60" />
+            <span className="px-3 text-xs text-muted-foreground uppercase tracking-[0.2em]">
+              or
+            </span>
+            <div className="flex-1 h-px bg-border/60" />
+          </div>
+
+          {/* Email/password form */}
           <form
             onSubmit={submitLogin}
-            className="space-y-6 w-full max-w-[340px] mx-auto md:mx-0 md:ml-[100px] mt-6"
+            className="space-y-6 w-full max-w-[340px] mx-auto md:mx-0 md:ml-[100px] mt-2"
           >
             <div className="space-y-2 text-left">
               <label

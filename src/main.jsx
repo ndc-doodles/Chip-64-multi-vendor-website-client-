@@ -14,7 +14,7 @@ import { Toaster } from './Components/ui/sonner';
         <PersistGate loading={null} persistor={persistor}>
           <App />
           <Toaster position="top-center" richColors  duration={2500} />
-\        </PersistGate>
+       </PersistGate>
       </Provider>
     </GoogleOAuthProvider>
   </StrictMode>

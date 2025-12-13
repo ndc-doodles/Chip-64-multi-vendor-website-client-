@@ -1,7 +1,12 @@
 @import "tailwindcss";
 
+
+
 :root {
   /* Luxury leather color palette - Deep brown, black, white, gold accents */
+   --background: oklch(0.97 0.02 72); /* off-white cream (hex #F7F0E6) */
+  --card: oklch(0.98 0.015 74);      /* slightly lighter card surface */
+
   --background: oklch(0.97 0.005 70);
   --foreground: oklch(0.18 0.04 35);
   --card: oklch(0.98 0.001 0);

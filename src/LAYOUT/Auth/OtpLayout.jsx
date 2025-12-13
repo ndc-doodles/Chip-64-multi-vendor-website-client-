@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import api from "../../API/axiosInstance";
 import { toast } from "sonner";
+import { verifyOtpApi } from "@/API/userAPI";
 
 const VerifyOtpLayout = () => {
   const location = useLocation();
@@ -20,16 +21,17 @@ const VerifyOtpLayout = () => {
 
   const handleVerify = async (otp, done) => {
     try {
-      const res = await api.post("/auth/verify-otp", {
+      const data= await verifyOtpApi({
         email,
         otp,
+        purpose:"register"
       });
 
       dispatch({
         type: "SET_USER",
         payload: {
-          user: res.data.user,
-          accessToken: res.data.accessToken,
+          user: data.user,
+          accessToken: data.accessToken,
         },
       });
 

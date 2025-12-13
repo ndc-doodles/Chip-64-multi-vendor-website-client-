@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import api from "../../API/axiosInstance";
 import { toast } from "sonner";
+import { sendOtpApi } from "@/API/userAPI";
 const RegisterLayout = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail]     = useState("");
@@ -15,37 +16,39 @@ const RegisterLayout = () => {
   const dispatch = useDispatch();
 
    const submitRegister = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match");
-      return;
-    }
+  if (password !== confirmPassword) {
+    toast.error("Passwords do not match");
+    return;
+  }
 
-    setIsLoading(true);
+  setIsLoading(true);
 
-    try {
-      const res = await api.post("/auth/send-otp", {
-        name: fullName,
-        email,
-        password,
-      });
+  try {
+    const data= await sendOtpApi({
+      name: fullName,
+      email,
+      password,
+      purpose: "register",        // 🔥 important
+    });
 
-      toast.success("OTP sent to your email 🤎");
+    toast.success("OTP sent to your email 🤎");
 
-      navigate("/verify-otp", {
-        state: { email, name: fullName },
-      });
-    } catch (err) {
-      console.error("Register error:", err.response?.data || err.message);
-      toast.error(err.response?.data?.message || "Failed to send OTP");
+    navigate("/verify-otp", {
+      state: { email, name: fullName, purpose: "register" }, // (optional but useful)
+    });
+  } catch (err) {
+    console.error("Register error:", err.response?.data || err.message);
+    toast.error(err.response?.data?.message || "Failed to send OTP");
 
-      setPassword("");
-      setConfirmPassword("");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    setPassword("");
+    setConfirmPassword("");
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
 
   return (

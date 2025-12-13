@@ -1,5 +1,5 @@
 import React from "react";
-import VerifyOtpLayout from "@/LAYOUT/Auth/OtpLayout";
+import VerifyOtpLayout from "@/Layout/Auth/OtpLayout";
 
 const VerifyOtpPage = () => {
   return <VerifyOtpLayout />;
