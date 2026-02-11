@@ -1,86 +1,151 @@
+
+
 @import "tailwindcss";
+@import "tw-animate-css";
 
+@custom-variant dark (&:is(.dark *));
+@font-face {
+  font-family: "Mona Sans";
+  src: url("/fonts/Mona-Sans.woff2.ttf") format("truetype");
+  font-display: swap;
+}
 
+/* ===============================
+   BASE TYPOGRAPHY (KEEP POPPINS)
+================================*/
+@layer base {
+  body {
+    font-family: "Mona Sans", system-ui, -apple-system, sans-serif;
+  }
 
+  h1 { font-weight: 650; }
+  h2 { font-weight: 600; }
+  h3 { font-weight: 500; }
+}
+html {
+  background: radial-gradient(
+    circle at top,
+    #ffffff 0%,
+    #f7f6f3 45%,
+    #efeeea 100%
+  );
+  background-attachment: fixed;
+}
+.dark html {
+  background: radial-gradient(
+    circle at top,
+    #18181b 0%,
+    #0a0a0a 70%
+  );
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center px-6 py-3
+         rounded-full bg-primary text-primary-foreground
+         shadow-[0_20px_50px_rgba(15,23,42,0.4)]
+         hover:bg-black transition;
+}
+
+.btn-outline {
+  @apply inline-flex items-center justify-center px-6 py-3
+         rounded-full border border-border
+         hover:bg-accent transition;
+}
 :root {
-  /* Luxury leather color palette - Deep brown, black, white, gold accents */
-   --background: oklch(0.97 0.02 72); /* off-white cream (hex #F7F0E6) */
-  --card: oklch(0.98 0.015 74);      /* slightly lighter card surface */
+  /* Core - Apple Light */
+  --background: #ffffff;
+  --foreground: #1d1d1f;
 
-  --background: oklch(0.97 0.005 70);
-  --foreground: oklch(0.18 0.04 35);
-  --card: oklch(0.98 0.001 0);
-  --card-foreground: oklch(0.18 0.04 35);
-  --popover: oklch(0.98 0.001 0);
-  --popover-foreground: oklch(0.18 0.04 35);
-  --primary: oklch(0.28 0.12 35);
-  --primary-foreground: oklch(0.97 0.005 70);
-  --secondary: oklch(0.88 0.02 70);
-  --secondary-foreground: oklch(0.18 0.04 35);
-  --muted: oklch(0.82 0.01 70);
-  --muted-foreground: oklch(0.5 0.02 70);
-  --accent: oklch(0.58 0.14 50);
-  --accent-foreground: oklch(0.18 0.04 35);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.97 0.005 70);
-  --border: oklch(0.92 0.005 70);
-  --input: oklch(0.98 0.001 0);
-  --ring: oklch(0.58 0.14 50);
-  --chart-1: oklch(0.28 0.12 35);
-  --chart-2: oklch(0.58 0.14 50);
-  --chart-3: oklch(0.18 0.04 35);
-  --chart-4: oklch(0.82 0.01 70);
-  --chart-5: oklch(0.5 0.02 70);
-  --radius: 0.375rem;
-  --sidebar: oklch(0.98 0.001 0);
-  --sidebar-foreground: oklch(0.18 0.04 35);
-  --sidebar-primary: oklch(0.28 0.12 35);
-  --sidebar-primary-foreground: oklch(0.97 0.005 70);
-  --sidebar-accent: oklch(0.58 0.14 50);
-  --sidebar-accent-foreground: oklch(0.18 0.04 35);
-  --sidebar-border: oklch(0.92 0.005 70);
-  --sidebar-ring: oklch(0.58 0.14 50);
+  --card: #ffffff;
+  --card-foreground: #1d1d1f;
+
+  --popover: #ffffff;
+  --popover-foreground: #1d1d1f;
+
+  /* Primary - Premium Black */
+  --primary: #8bf606;
+  --primary-foreground: #ffffff;
+
+  --accent: #b4ed3a;
+  --accent-foreground: #1d1d1f;
+
+  /* UI */
+  --secondary: #8bf606;
+  --secondary-foreground: #131313;
+
+  --muted: #f5f5f7;
+  --muted-foreground: #000000;
+
+  --border: #d2d2d7;
+  --input: #d2d2d7;
+  --ring: #000000;
+
+  /* Status */
+  --destructive: #ff3b30;
+  --destructive-foreground: #ffffff;
+
+  /* Radius - Apple Style */
+  --radius: 1rem;
+
+  /* Sidebar */
+  --sidebar: #f5f5f7;
+  --sidebar-foreground: #1d1d1f;
+  --sidebar-primary: #000000;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e8e8ed;
+  --sidebar-accent-foreground: #1d1d1f;
+  --sidebar-border: #d2d2d7;
+  --sidebar-ring: #000000;
 }
-
+/* ===============================
+ ==========================
+   DARK MODE – TECH DARK
+================================*/
 .dark {
-  --background: oklch(0.15 0.03 35);
-  --foreground: oklch(0.97 0.005 70);
-  --card: oklch(0.18 0.04 35);
-  --card-foreground: oklch(0.97 0.005 70);
-  --popover: oklch(0.18 0.04 35);
-  --popover-foreground: oklch(0.97 0.005 70);
-  --primary: oklch(0.65 0.14 50);
-  --primary-foreground: oklch(0.15 0.03 35);
-  --secondary: oklch(0.28 0.12 35);
-  --secondary-foreground: oklch(0.97 0.005 70);
-  --muted: oklch(0.32 0.08 35);
-  --muted-foreground: oklch(0.68 0.08 70);
-  --accent: oklch(0.72 0.16 50);
-  --accent-foreground: oklch(0.15 0.03 35);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.97 0.005 70);
-  --border: oklch(0.28 0.12 35);
-  --input: oklch(0.25 0.08 35);
-  --ring: oklch(0.72 0.16 50);
-  --chart-1: oklch(0.65 0.14 50);
-  --chart-2: oklch(0.72 0.16 50);
-  --chart-3: oklch(0.82 0.01 70);
-  --chart-4: oklch(0.5 0.02 70);
-  --chart-5: oklch(0.32 0.08 35);
-  --sidebar: oklch(0.18 0.04 35);
-  --sidebar-foreground: oklch(0.97 0.005 70);
-  --sidebar-primary: oklch(0.65 0.14 50);
-  --sidebar-primary-foreground: oklch(0.97 0.005 70);
-  --sidebar-accent: oklch(0.72 0.16 50);
-  --sidebar-accent-foreground: oklch(0.15 0.03 35);
-  --sidebar-border: oklch(0.28 0.12 35);
-  --sidebar-ring: oklch(0.72 0.16 50);
+  --background: #0a0a0a;
+  --foreground: #e5e7eb;
+
+  --card: #0f0f0f;
+  --card-foreground: #e5e7eb;
+
+  --popover: #0f0f0f;
+  --popover-foreground: #e5e7eb;
+
+  --primary: #ffffff;
+  --primary-foreground: #020617;
+
+  --accent: #5ed943e3;
+  --accent-foreground: #e5e7eb;
+
+  --secondary: #121212;
+  --secondary-foreground: #e5e7eb;
+
+  --muted: #121212;
+  --muted-foreground: #a1a1aa;
+
+  --border: #27272a;
+  --input: #27272a;
+  --ring: #ffffff;
+
+  --destructive: #865c5c;
+  --destructive-foreground: #020617;
+
+  --sidebar: #0a0a0a;
+  --sidebar-foreground: #e5e7eb;
+  --sidebar-primary: #ffffff;
+  --sidebar-primary-foreground: #020617;
+  --sidebar-accent: #1c1c1c;
+  --sidebar-accent-foreground: #e5e7eb;
+  --sidebar-border: #27272a;
+  --sidebar-ring: #ffffff;
 }
 
+
+/* ===============================
+   THEME TOKENS (TAILWIND)
+================================*/
 @theme inline {
-  --font-sans: "Geist", "Geist Fallback";
-  --font-mono: "Geist Mono", "Geist Mono Fallback";
-  --font-serif: Georgia, serif;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -100,15 +165,12 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -119,21 +181,99 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* ===============================
+   BASE STYLES
+================================*/
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 
-  html {
-    background: linear-gradient(135deg, oklch(0.97 0.005 70) 0%, oklch(0.94 0.01 70) 100%);
-    background-attachment: fixed;
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
-  .dark html {
-    background: linear-gradient(135deg, oklch(0.15 0.03 35) 0%, oklch(0.12 0.02 35) 100%);
-    background-attachment: fixed;
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
+}
+
+/* ===============================
+   COMPONENTS – IT ECOMMERCE
+================================*/
+@layer components {
+
+  /* Labels */
+  .label {
+    @apply text-sm font-medium text-muted-foreground mb-1;
+  }
+
+  /* Inputs */
+  .input {
+    @apply w-full px-4 py-2.5 rounded-lg border bg-background
+           focus:ring-2 focus:ring-primary outline-none;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-2.5
+           rounded-lg bg-primary text-primary-foreground
+           hover:bg-primary/90 transition;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center px-6 py-2.5
+           rounded-lg border border-border
+           hover:bg-muted transition;
+  }
+
+  /* Cards */
+  .card {
+    @apply bg-card text-card-foreground border border-border
+           rounded-xl shadow-sm;
+  }
+
+  /* Product Card */
+  .product-card {
+    @apply bg-card border border-border rounded-xl
+           hover:shadow-md transition;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-1
+           rounded-md text-xs font-medium
+           bg-accent text-accent-foreground;
+  }
+}
+
+/* ===============================
+   SUBTLE BACKGROUND GRADIENT
+================================*/
+html {
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #f8fafc 100%
+  );
+  background-attachment: fixed;
+}
+.input {
+  @apply w-full rounded-xl border border-border bg-background px-4 py-3
+  text-sm outline-none transition
+  focus:border-primary focus:ring-2 focus:ring-primary/20;
+}
+
+.dark html {
+  background: linear-gradient(
+    135deg,
+    #020617 0%,
+    #020617 100%
+  );
+  background-attachment: fixed;
 }

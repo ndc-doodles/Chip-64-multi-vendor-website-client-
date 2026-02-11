@@ -60,15 +60,18 @@ const OtpVerify = ({ email = "****@gmail.com", onVerify }) => {
   return (
     <div className="space-y-8 text-center animate-fade-in">
       {/* Brand Logo */}
-      <div className="space-y-2">
-        <h1 className="font-serif text-6xl font-light tracking-tight text-foreground">
-          LEATHER
+      <div className="space-y-2 pt-5">
+        <h1 className=" text-4xl font-light tracking-tight text-foreground">
+          CHIP
           <br />
-          HAVEN
+          <span className="text-primary">
+          64
+
+          </span>
         </h1>
         <div className="h-0.5 w-12 bg-linear-to-r from-transparent via-accent to-transparent mx-auto my-4" />
         <p className="text-xs tracking-widest text-muted-foreground font-light">
-          PREMIUM CRAFTED LEATHER
+         Everything Tech. One Place
         </p>
       </div>
 
@@ -113,7 +116,7 @@ const OtpVerify = ({ email = "****@gmail.com", onVerify }) => {
         <Button
           type="submit"
           disabled={isSubmitting || otp.length !== 4}
-          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-light tracking-widest uppercase text-sm h-11 transition-all rounded-sm disabled:opacity-60"
+          className="w-full bg-primary hover:bg-primary/90 text-black font-light tracking-widest uppercase text-sm h-11 transition-all rounded-sm disabled:opacity-60"
         >
           {isSubmitting ? "Verifying..." : "Verify Account"}
         </Button>

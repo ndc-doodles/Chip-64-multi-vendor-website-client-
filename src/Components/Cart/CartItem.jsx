@@ -1,80 +1,133 @@
 "use client";
 
-import React from "react";
-import { Minus, Plus, X } from "lucide-react";
+import { Trash2, Minus, Plus } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { getDisplayAttributes } from "@/Utils/getDisplayAttributes";
 
-/**
- * Compact Premium CartItem
- */
-export default function CartItem({ item, onIncrease, onDecrease, onRemove, index = 0 }) {
-    
+export default function CartItem({
+  item,
+  onIncrease,
+  onDecrease,
+  onRemove,
+}) {
+  const displayAttributes = getDisplayAttributes(
+    item.category,
+    item.attributes
+  );
+
+  const itemTotal = item.price * item.quantity;
+
   return (
-    <div
-      className="bg-card rounded-xl p-5 md:p-6 border border-border shadow-sm hover:shadow-md transition-all duration-300 animate-slide-up"
-      style={{ animationDelay: `${index * 100}ms` }}
-    >
-      <div className="flex flex-col md:flex-row gap-4 md:gap-6">
-        
-        {/* Product Image */}
-        <div className="flex-shrink-0">
+    <AnimatePresence>
+      <motion.div
+        layout
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, x: -120 }}
+        transition={{ duration: 0.25 }}
+
+        /* 🔥 swipe to delete */
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        onDragEnd={(e, info) => {
+          if (info.offset.x < -120) onRemove();
+        }}
+
+        className="
+          relative
+          flex gap-5
+          p-5
+          rounded-3xl
+          border border-border
+          bg-gradient-to-br
+          from-white/70
+          to-white/40
+          backdrop-blur-xl
+          shadow-md
+          hover:shadow-xl
+          hover:-translate-y-1
+          transition
+        "
+      >
+        {/* DELETE BUTTON */}
+        <button
+          onClick={onRemove}
+          className="
+            absolute top-3 right-3
+            w-8 h-8
+            flex items-center justify-center
+            rounded-full
+            text-gray-400
+            hover:bg-red-50 hover:text-red-600
+            transition
+          "
+        >
+          <Trash2 size={16} />
+        </button>
+
+        {/* IMAGE */}
+        <div className="w-24 h-24 shrink-0 rounded-xl overflow-hidden bg-secondary/30">
           <img
             src={item.image || "/placeholder.svg"}
             alt={item.name}
-            className="w-full md:w-28 h-40 md:h-28 object-cover rounded-lg"
+            className="w-full h-full object-cover"
           />
         </div>
 
-        {/* Product Details */}
-        <div className="flex-grow space-y-3">
+        {/* CONTENT */}
+        <div className="flex flex-col flex-1 justify-between">
+
+          {/* TOP */}
           <div>
-            <h3 className="font-serif text-xl text-card-foreground mb-1">{item.name}</h3>
-            <div className="flex gap-3 text-muted-foreground text-sm">
-              <span>Color: {item.color}</span>
-              <span>•</span>
-              <span>Size: {item.size}</span>
-            </div>
+            <h3 className="font-medium text-base tracking-tight">
+              {item.name}
+            </h3>
+
+            {displayAttributes.length > 0 && (
+              <p className="text-xs text-muted-foreground mt-1">
+                {displayAttributes.join(" • ")}
+              </p>
+            )}
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            
-            {/* Price */}
-            <div className="font-serif text-xl text-primary">
-              ₹{Number(item.price).toFixed(2)}
-            </div>
+          {/* BOTTOM */}
+          <div className="flex items-center justify-between mt-3">
 
-            {/* Quantity Controls */}
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 border border-border rounded-lg px-3 py-1.5">
-                <button
-                  onClick={() => onDecrease(item.id)}
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  <Minus className="w-3.5 h-3.5" />
-                </button>
+            {/* 🔥 QTY with smooth animation */}
+            <div className="flex items-center gap-2 border rounded-full px-3 py-1">
 
-                <span className="font-serif text-base w-6 text-center">
-                  {item.quantity}
-                </span>
+              <button onClick={onDecrease}>
+                <Minus size={14} />
+              </button>
 
-                <button
-                  onClick={() => onIncrease(item.id)}
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                </button>
-              </div>
-
-              <button
-                onClick={() => onRemove(item.id)}
-                className="text-muted-foreground hover:text-foreground transition-colors p-1.5"
+              <motion.span
+                key={item.quantity}
+                initial={{ scale: 0.7, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.15 }}
+                className="text-sm font-medium w-6 text-center"
               >
-                <X className="w-4 h-4" />
+                {item.quantity}
+              </motion.span>
+
+              <button onClick={onIncrease}>
+                <Plus size={14} />
               </button>
             </div>
 
+            {/* PRICE */}
+            <motion.div
+              key={itemTotal}
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.2 }}
+              className="text-base font-semibold"
+            >
+              ₹{itemTotal.toLocaleString()}
+            </motion.div>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </AnimatePresence>
   );
 }

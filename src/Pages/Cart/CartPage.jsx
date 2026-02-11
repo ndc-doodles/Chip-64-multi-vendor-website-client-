@@ -1,253 +1,247 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import CartItem from "@/Components/Cart/CartItem";
-import { toast } from "sonner";
 import {
   getCartApi,
   updateCartItemQtyApi,
-  removeCartItemApi
+  removeCartItemApi,
 } from "@/API/userAPI";
-import HeaderLayout from "@/Layout/Header/HeaderLayout";
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-
-function mapServerItemToUI(it) {
- 
-  const raw = it;
-
-
-  const directSize = raw.size || raw.selectedSize || raw.sizeSnapshot || null;
-  const directColor = raw.color || raw.selectedColor || raw.colorSnapshot || null;
-
-  // options array fallback
-  let optSize = null, optColor = null;
-  if (Array.isArray(raw.options)) {
-    for (const o of raw.options) {
-      const name = (o.name || "").toString().toLowerCase();
-      if (!optColor && (name.includes("color") || name.includes("colour"))) optColor = o.value;
-      if (!optSize && (name.includes("size"))) optSize = o.value;
-    }
-  }
-
-  // variant object fallback
-  const variant = raw.variant || raw.variantSnapshot || raw.variantData || null;
-  const varSize = variant?.size || null;
-  const varColor = variant?.color || variant?.colour || null;
-
-  // attributes/object fallback
-  const attrs = raw.attributes || raw.meta || raw.metadata || null;
-  let attrSize = null, attrColor = null;
-  if (attrs && typeof attrs === "object") {
-    if (attrs.size) attrSize = attrs.size;
-    if (attrs.color) attrColor = attrs.color;
-    // sometimes attributes is array:
-    if (Array.isArray(attrs)) {
-      attrs.forEach(a => {
-        const n = (a.name||"").toLowerCase();
-        if (!attrColor && (n.includes("color")||n.includes("colour"))) attrColor = a.value;
-        if (!attrSize && n.includes("size")) attrSize = a.value;
-      });
-    }
-  }
-
-  const size = directSize || varSize || optSize || attrSize || "";
-  const color = directColor || varColor || optColor || attrColor || "";
-
-  return {
-    id: raw._id || raw.id,
-    productId: raw.productId,
-    name: raw.name || raw.title || (raw.product && raw.product.name) || "Product",
-    image: raw.image || raw.thumbnail || raw.product?.image || raw.productSnapshot?.image || "/placeholder.svg",
-    color,
-    size,
-    price: Number(raw.price || raw.unitPrice || raw.priceSnapshot || 0),
-    quantity: Number(raw.qty || raw.quantity || raw.count || 1),
-    raw,
-  };
-}
-
+import { useDispatch } from "react-redux";
+import { fetchCart } from "@/redux/actions/cartActions";
+import HeaderLayout from "@/Layout/Header/HeaderLayout";
+import CartRecommendations from "@/Components/Cart/RecommendedCartItems";
+import { getCartRecommendationsApi } from "@/API/userAPI";
 export default function CartPage() {
-    const navigate=useNavigate()
-  const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [updatingIds, setUpdatingIds] = useState(new Set());
-  
-  useEffect(() => {
-    let mounted = true;
-    async function load() {
-      setLoading(true);
-      try {
-        const data = await getCartApi(); // expects { success, cart }
-        const cart = data.cart || data;
-        const items = (cart.items || []).map(mapServerItemToUI);
-        // temporarily
-console.log("raw cart item:", items); 
+  const [items, setItems] = useState([]);
+  const navigate=useNavigate()
+  const dispatch=useDispatch()
+  const [recommendations, setRecommendations] = useState([]);
 
-        if (!mounted) return;
-        setCartItems(items);
-      } catch (err) {
-        console.error("Failed to load cart:", err);
+useEffect(() => {
+  if (!items.length) return;
+
+  fetchRecommendations();
+}, [items]);
+
+const fetchRecommendations = async () => {
+  try {
+    const productIds = items
+      .map((item) => item.productId || item.product?._id)
+      .filter(Boolean); // removes undefined safely
+
+    if (!productIds.length) return;
+
+    const data = await getCartRecommendationsApi({
+      cartProductIds: productIds,
+    });
+
+    setRecommendations(data);
+  } catch (err) {
+    console.error("Failed to load recommendations", err);
+  }
+};
+  /* ---------------- LOAD CART ---------------- */
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await getCartApi();
+        setItems(res.cart?.items || []);
+      } catch {
         toast.error("Failed to load cart");
-      } finally {
-        if (mounted) setLoading(false);
       }
-    }
-    load();
-    return () => { mounted = false; };
+    })();
   }, []);
 
-  const updateQuantity = async (id, delta) => {
-    const item = cartItems.find((i) => i.id === id);
-    if (!item) return;
-    const newQty = Math.max(1, item.quantity + delta);
+  /* ---------------- ACTIONS ---------------- */
+  const increaseQty = async (item) => {
+    const res = await updateCartItemQtyApi(
+      item._id,
+      item.qty + 1
+    );
+    setItems(res.cart.items);
+  };
 
-    // optimistic UI: mark updating, but wait for API before committing
-    setUpdatingIds((s) => new Set(s).add(id));
-    try {
-      const res = await updateCartItemQtyApi(id, newQty); // returns { success, cart }
-      // map server cart to UI items
-      const serverItems = res.cart?.items || res.cart?.items || (res.cart ? res.cart.items : null);
-      if (serverItems) {
-        setCartItems(serverItems.map(mapServerItemToUI));
-      } else {
-        // fallback: patch locally with returned qty if any
-        setCartItems((prev) => prev.map((it) => (it.id === id ? { ...it, quantity: newQty } : it)));
-      }
-    } catch (err) {
-      console.error("Failed update qty:", err);
-      toast.error(err?.response?.data?.message || "Failed to update quantity");
-    } finally {
-      setUpdatingIds((s) => {
-        const next = new Set(s);
-        next.delete(id);
-        return next;
-      });
-    }
+  const decreaseQty = async (item) => {
+    if (item.qty <= 1) return;
+    const res = await updateCartItemQtyApi(
+      item._id,
+      item.qty - 1
+    );
+    setItems(res.cart.items);
   };
 
   const removeItem = async (id) => {
-
-  setUpdatingIds((s) => new Set(s).add(id));
-
-  try {
     const res = await removeCartItemApi(id);
-    const serverItems = res.cart?.items || (res.cart ? res.cart.items : null);
+    setItems(res.cart.items);
+     dispatch(fetchCart())
+  };
 
-    if (serverItems) {
-      setCartItems(serverItems.map(mapServerItemToUI));
-    } else {
-      setCartItems((prev) => prev.filter((it) => it.id !== id));
-    }
+  /* ---------------- CALCULATIONS ---------------- */
+  const subtotal = items.reduce(
+    (sum, i) => sum + i.price * i.qty,
+    0
+  );
 
-    toast.success("Item removed from cart");
-  } catch (err) {
-    console.error("Failed remove item:", err);
-    toast.error(err?.response?.data?.message || "Failed to remove item");
-  } finally {
-    setUpdatingIds((s) => {
-      const next = new Set(s);
-      next.delete(id);
-      return next;
-    });
-  }
-};
+  const discountPercent = 0;
+  const discount = (subtotal * discountPercent) / 100;
+  const deliveryFee = 50;
+  const total = subtotal - discount + deliveryFee;
+if (!items.length) {
+  return (
+    <>
+      <HeaderLayout />
 
+      <main className="min-h-screen flex items-center justify-center bg-white p-8">
+        <div className="text-center max-w-md">
 
-  // totals computed on client from items (you could use server totals if available)
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  
-  const total = +(subtotal ).toFixed(2);
-  const totalItems = cartItems.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+          <h2 className="text-2xl font-semibold mb-3">
+            Your cart is empty
+          </h2>
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-6">
-        <div className="text-center">
-          <p>Loading cart…</p>
+          <p className="text-gray-500 mb-6">
+            Looks like you haven't added anything yet.
+          </p>
+
+          <Button
+            className="bg-primary text-black rounded-full px-8 py-3"
+            onClick={() => navigate("/shop")}
+          >
+            Continue Shopping
+          </Button>
+
         </div>
-      </div>
-    );
-  }
-
-  if (cartItems.length === 0) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-6">
-  <div className="text-center space-y-8 animate-fade-in">
-    <h1 className="font-serif text-5xl md:text-6xl text-primary">Your cart is empty.</h1>
-    
-    <Button
-      onClick={() => navigate("/shop")}
-      className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-2xl px-8 py-6 text-lg font-serif transition-all hover:scale-105"
-    >
-      Continue Shopping
-    </Button>
-  </div>
-</div>
-
-    );
-  }
+      </main>
+    </>
+  );
+}
 
   return (
     <>
     <HeaderLayout/>
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-6 py-12 md:py-16">
-        {/* Header */}
-        <div className="mb-12 animate-fade-in">
-          <h1 className="font-serif text-3xl md:text-4xl text-primary mb-3 text-balance">Your Cart</h1>
-          <p className="text-muted-foreground text-lg">Review your selections before checkout.</p>
+<main
+  className="
+    min-h-screen
+    p-4 sm:p-6 lg:p-8   /* smaller padding on mobile */
+    bg-gradient-to-br
+    from-white
+    via-primary/5
+    to-secondary/10
+  "
+>
+  <div className="max-w-7xl mx-auto">
+
+    {/* Title responsive */}
+    <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-5 sm:mb-8">
+      Shopping Cart
+    </h1>
+
+    {/* Grid */}
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+
+      {/* ================= LEFT (Items) ================= */}
+      <div className="lg:col-span-2 space-y-3 sm:space-y-4">
+
+        {items.map((item) => (
+          <CartItem
+            key={item._id}
+            item={{ ...item, quantity: item.qty }}
+            onIncrease={() => increaseQty(item)}
+            onDecrease={() => decreaseQty(item)}
+            onRemove={() => removeItem(item._id)}
+          />
+        ))}
+
+        {/* Continue shopping */}
+        <div className="pt-2 sm:pt-4">
+          <Button
+            className="
+              rounded-full
+              px-5 sm:px-8
+              py-2
+              text-sm sm:text-base
+              bg-secondary
+              text-black
+            "
+            onClick={() => navigate("/shop")}
+          >
+            Continue Shopping
+          </Button>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-12">
-          {/* Cart Items */}
-          <div className="lg:col-span-8 space-y-6">
-            {cartItems.map((item, index) => (
-              <CartItem
-                key={item.id}
-                item={item}
-                index={index}
-                onIncrease={() => updateQuantity(item.id, 1)}
-                onDecrease={() => updateQuantity(item.id, -1)}
-                onRemove={() => removeItem(item.id)}
-                // optionally pass a disabled prop while updating
-              />
-            ))}
+        <CartRecommendations products={recommendations} />
+      </div>
+
+      {/* ================= RIGHT (Summary) ================= */}
+      <div
+        className="
+          bg-card/60 backdrop-blur-xl border border-border
+          rounded-2xl sm:rounded-3xl
+          p-5 sm:p-6 lg:p-8
+          shadow-xl
+
+          /* ❌ sticky only on desktop */
+          lg:sticky lg:top-8
+          h-fit
+        "
+      >
+        <h2 className="text-base sm:text-lg font-semibold mb-4 sm:mb-6">
+          Order Summary
+        </h2>
+
+        {/* Price list */}
+        <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6 text-xs sm:text-sm">
+
+          <div className="flex justify-between">
+            <span>Sub Total</span>
+            <span>₹{subtotal}</span>
           </div>
 
-          {/* Order Summary */}
-          <div className="lg:col-span-4">
-            <div className="bg-card rounded-2xl p-8 border border-border shadow-sm sticky top-8 animate-fade-in">
-              <h2 className="font-serif text-3xl text-card-foreground mb-6">Order Summary</h2>
+          <div className="flex justify-between">
+            <span>Discount ({discountPercent}%)</span>
+            <span>-₹{discount}</span>
+          </div>
 
-              <div className="space-y-4 mb-6">
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Subtotal</span>
-                  <span className="font-serif">₹{subtotal.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Total Quantity</span>
-                  <span className="font-serif">{totalItems}</span>
-                </div>
-                <div className="flex justify-between text-muted-foreground">
-                  <span></span>
-                  <span className="font-serif"></span>
-                </div>
-                <div className="h-px bg-border my-4" />
-                <div className="flex justify-between text-foreground text-xl">
-                  <span className="font-serif font-semibold">Total</span>
-                  <span className="font-serif font-semibold">₹{total.toFixed(2)}</span>
-                </div>
-              </div>
+          <div className="flex justify-between">
+            <span>Delivery fee</span>
+            <span>₹{deliveryFee}</span>
+          </div>
 
-              <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl py-6 text-lg font-serif shadow-md hover:shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98]">
-                Proceed to Checkout
-              </Button>
-            </div>
+        </div>
+
+        {/* Total */}
+        <div className="border-t pt-3 sm:pt-4 mb-4 sm:mb-6">
+          <div className="flex justify-between text-sm sm:text-base">
+            <span className="font-semibold">Total</span>
+            <span className="font-bold text-base sm:text-lg">
+              ₹{total}
+            </span>
           </div>
         </div>
+
+        {/* Checkout */}
+        <Button
+          className="
+            w-full
+            rounded-full
+            py-2.5 sm:py-3
+            text-sm sm:text-base
+            bg-primary
+            text-black
+          "
+          onClick={() => navigate("/checkout")}
+        >
+          Checkout Now
+        </Button>
       </div>
     </div>
+  </div>
+</main>
+
     </>
   );
 }

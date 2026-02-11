@@ -2,63 +2,111 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-foreground/5 border-t border-border/30">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+    <footer className="w-full border-t border-black/10 bg-[#8af606d7]">
 
-          {/* Brand */}
+      <div className="max-w-7xl mx-auto px-6 py-14 md:py-20">
+
+        {/* ================= GRID ================= */}
+        <div
+          className="
+            grid
+            grid-cols-1
+            sm:grid-cols-2
+            lg:grid-cols-4
+            gap-10 md:gap-14
+            text-center sm:text-left
+          "
+        >
+
+          {/* ================= BRAND ================= */}
           <div className="space-y-4">
-            <h3 className="font-serif text-2xl font-light text-foreground">LH</h3>
-            <p className="text-sm text-muted-foreground font-light leading-relaxed">
-              Premium handcrafted leather goods for the discerning individual.
+            <h3 className="text-2xl font-black text-black tracking-tight">
+              CHIP-64
+            </h3>
+
+            <p className="text-sm text-black/80 font-light leading-relaxed max-w-xs mx-auto sm:mx-0">
+              Premium hardware marketplace for laptops, components,
+              and surveillance systems. Fast. Secure. Trusted.
             </p>
           </div>
 
-          {/* Customer Service */}
+
+          {/* ================= CUSTOMER SERVICE ================= */}
           <div className="space-y-4">
-            <h4 className="text-sm tracking-widest text-foreground font-light uppercase">Customer Service</h4>
+            <h4 className="text-sm font-bold uppercase tracking-widest text-black">
+              Customer Service
+            </h4>
+
             <ul className="space-y-2">
-              <li><Link to="/contact" className="text-sm text-muted-foreground hover:text-accent transition-colors font-light">Contact Us</Link></li>
-              <li><Link to="/shipping" className="text-sm text-muted-foreground hover:text-accent transition-colors font-light">Shipping Info</Link></li>
-              <li><Link to="/returns" className="text-sm text-muted-foreground hover:text-accent transition-colors font-light">Returns</Link></li>
-              <li><Link to="/faq" className="text-sm text-muted-foreground hover:text-accent transition-colors font-light">FAQ</Link></li>
+              <FooterLink to="/contact" label="Contact Us" />
+              <FooterLink to="/shipping" label="Shipping Info" />
+              <FooterLink to="/returns" label="Returns" />
+              <FooterLink to="/faq" label="FAQ" />
             </ul>
           </div>
 
-          {/* About */}
+
+          {/* ================= ABOUT ================= */}
           <div className="space-y-4">
-            <h4 className="text-sm tracking-widest text-foreground font-light uppercase">About</h4>
+            <h4 className="text-sm font-bold uppercase tracking-widest text-black">
+              About
+            </h4>
+
             <ul className="space-y-2">
-              <li><Link to="/story" className="text-sm text-muted-foreground hover:text-accent transition-colors font-light">Our Story</Link></li>
-              <li><Link to="/craftsmanship" className="text-sm text-muted-foreground hover:text-accent transition-colors font-light">Craftsmanship</Link></li>
-              <li><Link to="/sustainability" className="text-sm text-muted-foreground hover:text-accent transition-colors font-light">Sustainability</Link></li>
-              <li><Link to="/careers" className="text-sm text-muted-foreground hover:text-accent transition-colors font-light">Careers</Link></li>
+              <FooterLink to="/about" label="Our Story" />
+              <FooterLink to="/vendors" label="Vendors" />
+              <FooterLink to="/careers" label="Careers" />
+              <FooterLink to="/support" label="Support" />
             </ul>
           </div>
 
-          {/* Policies */}
+
+          {/* ================= POLICIES ================= */}
           <div className="space-y-4">
-            <h4 className="text-sm tracking-widest text-foreground font-light uppercase">Policies</h4>
+            <h4 className="text-sm font-bold uppercase tracking-widest text-black">
+              Policies
+            </h4>
+
             <ul className="space-y-2">
-              <li><Link to="/privacy" className="text-sm text-muted-foreground hover:text-accent transition-colors font-light">Privacy Policy</Link></li>
-              <li><Link to="/terms" className="text-sm text-muted-foreground hover:text-accent transition-colors font-light">Terms of Service</Link></li>
-              <li><Link to="/shipping-policy" className="text-sm text-muted-foreground hover:text-accent transition-colors font-light">Shipping Policy</Link></li>
-              <li><Link to="/returns" className="text-sm text-muted-foreground hover:text-accent transition-colors font-light">Returns</Link></li>
+              <FooterLink to="/privacy" label="Privacy Policy" />
+              <FooterLink to="/terms" label="Terms of Service" />
+              <FooterLink to="/refund" label="Refund Policy" />
+              <FooterLink to="/security" label="Security" />
             </ul>
           </div>
         </div>
 
-        {/* Social + Copyright */}
-        <div className="border-t border-border/30 pt-8 space-y-6">
-          <div className="flex gap-6 justify-start">
-            {/* these stay as <a> because they'll go to external social links */}
-          </div>
 
-          <p className="text-xs text-muted-foreground font-light tracking-widest">
-            © 2025 Leather Haven — All Rights Reserved.
+        {/* ================= BOTTOM BAR ================= */}
+        <div className="border-t border-black/10 mt-14 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+
+          <p className="text-xs text-black/70 tracking-widest">
+            © 2025 CHIP-64 — All Rights Reserved
           </p>
+
+          <div className="flex gap-6 text-xs text-black/70">
+            <span>Secure Payments</span>
+            <span>Fast Delivery</span>
+            <span>Verified Sellers</span>
+          </div>
         </div>
+
       </div>
     </footer>
+  );
+}
+
+
+/* ================= REUSABLE LINK ================= */
+function FooterLink({ to, label }) {
+  return (
+    <li>
+      <Link
+        to={to}
+        className="text-sm text-black/80 hover:text-black hover:underline transition-colors font-light"
+      >
+        {label}
+      </Link>
+    </li>
   );
 }

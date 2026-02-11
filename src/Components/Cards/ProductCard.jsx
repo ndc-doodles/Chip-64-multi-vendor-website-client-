@@ -1,83 +1,190 @@
 "use client";
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ShoppingCart, Eye, Heart } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleWishlist } from "@/redux/actions/wishlistActions";
+import { isProductWishlisted } from "@/Utils/WishlistUtils";
+import { toast } from "sonner";
+import { addToCart } from "@/API/userAPI";
+import { fetchCart } from "@/redux/actions/cartActions";
+const COLOR_MAP = {
+  black: "#000000",
+  brown: "#5C4033",
+  beige: "#F5F5DC",
+  navy: "#001F3F",
+  olive: "#556B2F",
+};
 
-export default function ProductCard({ product }) {
-  const navigate = useNavigate();
+export default function ProductCard({ product ,shadow="shadow-2xl",bg="bg-white"}) {
   const [isHovered, setIsHovered] = useState(false);
+  const dispatch = useDispatch();
+  const wishlist = useSelector((state) => state.wishlist.items);
+  const defaultVariant =
+  product.variants?.find((v) => v.stock > 0) ||
+  product.variants?.[0] ||
+  null;
 
-  // 🟩 product object already prepared by ProductGrid
-  const { slug, name, price, image, badge } = product;
-  console.log(slug)
+ const loved = defaultVariant
+  ? isProductWishlisted(wishlist, product._id, defaultVariant._id)
+  : false;
+  const slug = product.slug;
+  const variants = product.variants || [];
+  const tags = product.tags || [];
 
-  // Badge styling logic
-  const badgeColor =
-    badge === "New"
-      ? "bg-accent text-accent-foreground"
-      : badge === "Limited"
-      ? "bg-secondary text-secondary-foreground"
-      : "bg-primary text-primary-foreground";
+  const stock = variants.reduce((s, v) => s + (v.stock || 0), 0);
+  const isOutOfStock = stock === 0;
+
+  const { user, accessToken } = useSelector((s) => s.user);
+
+const handleAddToCart = async (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  try {
+    if (!user || !accessToken) {
+      toast.error("Please login first");
+      return;
+    }
+
+    if (!defaultVariant) return;
+
+    const payload = {
+      productId: product._id,
+      vendorId: product.vendorId,
+      name: product.name,
+      slug: product.slug,
+      image: defaultVariant.images?.[0] || product.mainImage,
+      variantId: defaultVariant._id,
+      price: defaultVariant.price ?? product.basePrice,
+      qty: 1,
+      attributes: defaultVariant.attributes,
+    };
+
+    await addToCart(payload);
+
+    dispatch(fetchCart());
+
+    toast.success("Added to cart");
+  } catch (err) {
+    toast.error("Failed to add");
+  }
+};
+
+
+
+
+  const prices = variants
+    .map((v) => v.price ?? product.basePrice)
+    .filter(Boolean);
+
+  const priceDisplay =
+    prices.length === 0
+      ? "—"
+      : Math.min(...prices) === Math.max(...prices)
+      ? `₹${prices[0]}`
+      : `₹${Math.min(...prices)} – ₹${Math.max(...prices)}`;
+
+  const colors = Array.from(
+    new Set(
+      variants
+        .map((v) => v.attributes?.Color)
+        .filter(Boolean)
+        .map((c) => c.toLowerCase())
+        .filter((c) => COLOR_MAP[c])
+    )
+  ).slice(0, 3);
 
   return (
     <div
-      className="group cursor-pointer transition-transform duration-300 hover:scale-[1.01]"
+      className={`group relative ${bg} rounded-3xl overflow-hidden ${shadow} transition-all duration-300 hover:shadow-md hover:-translate-y-0.5`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => navigate(`/product/${slug}`)}
     >
-      {/* Image Container */}
-      <div className="relative overflow-hidden bg-muted mb-5 aspect-square rounded-sm">
-        <img
-          src={image || "/placeholder.svg"}
-          alt={name}
-          className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-        />
+      {/* ❤️ Wishlist */}
+     <button
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(toggleWishlist({ productId: product._id ,variantId:defaultVariant._id}));
+  }}
+  className="absolute top-2 right-2 z-10"
+>
+  <Heart
+    className={`w-5 h-5 transition-all duration-200 ${
+      loved
+        ? "fill-red-500 stroke-red-500 scale-110"
+        : "fill-transparent stroke-white"
+    }`}
+  />
+</button>
 
-        {/* Hover Overlay */}
-        <div
-          className={`absolute inset-0 transition-all duration-300 ${
-            isHovered ? "bg-black/10" : "bg-transparent"
-          }`}
-        />
 
-        {/* Badge */}
-        {badge && (
-          <span
-            className={`absolute top-4 right-4 px-3 py-[5px] text-[11px] font-medium rounded-sm uppercase tracking-wide ${badgeColor}`}
-          >
-            {badge}
-          </span>
-        )}
+      {/* IMAGE (CLICKABLE) */}
+      <Link to={`/product/${slug}`}>
+        <div className="relative aspect-square overflow-hidden bg-[#F6F6F6] ">
+          <img
+            src={product.mainImage}
+            alt={product.name}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 z-0"
+          />
 
-        {/* Quick View Button */}
-        <div
-          className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
-            isHovered ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <button
-            className="px-7 py-2 bg-foreground text-background text-sm font-medium tracking-wide hover:bg-foreground/90 rounded-sm backdrop-blur-sm shadow-sm transition-colors"
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/product/${slug}`);
-            }}
-          >
-            Quick View
-          </button>
+          {/* BADGES */}
+          <div className="absolute top-2 left-2 flex flex-col gap-1">
+            {tags.includes("new") && (
+              <Badge className="bg-accent text-white text-[10px]">
+                New
+              </Badge>
+            )}
+          </div>
+
+          {/* HOVER ACTIONS */}
+          {isHovered && !isOutOfStock && (
+            <div className="absolute inset-0 bg-black/40 flex items-center justify-center gap-2">
+              <Button size="icon" variant="secondary" className="h-8 w-8 bg-primary">
+                <Eye className="w-4 h-4" />
+              </Button>
+            </div>
+          )}
         </div>
-      </div>
+      </Link>
 
-      {/* Product Info */}
-      <div className="text-center space-y-2">
-        <h3 className="font-serif text-lg text-foreground font-light tracking-tight">
-          {name}
-        </h3>
+      {/* INFO */}
+      <div className="p-2.5 z-1">
+        <Link to={`/product/${slug}`}>
+          <h3 className="text-sm font-medium text-foreground line-clamp-2 mb-1 hover:underline">
+            {product.name}
+          </h3>
+        </Link>
 
-        {/* 🟩 Updated to show correct price sent by ProductGrid */}
-        <p className="text-[15px] font-medium tracking-wide text-muted-foreground">
-          ₹{Number(price).toLocaleString()}
+        {/* COLORS */}
+        <div className="flex gap-1 mb-2 min-h-4">
+          {colors.map((c) => (
+            <span
+              key={c}
+              className="w-3 h-3 rounded-full border"
+              style={{ backgroundColor: COLOR_MAP[c] }}
+            />
+          ))}
+        </div>
+
+        <p className="text-sm font-semibold text-black mb-2">
+          {priceDisplay}
         </p>
+
+        {/* ADD TO CART */}
+     <Button
+  size="sm"
+  className="w-full bg-primary rounded-2xl text-black text-xs h-8  hover:bg-secondary-foreground hover:text-primary"
+  disabled={isOutOfStock}
+  onClick={handleAddToCart}
+>
+  {isOutOfStock ? "Out of Stock" : "Add to Cart"}
+</Button>
+
       </div>
     </div>
   );

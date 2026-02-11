@@ -1,25 +1,33 @@
-import React, { useState } from "react";
-import Login from "../../COMPONENTS/Login/LoginForm";
-import { useNavigate, Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import api from "../../API/axiosInstance";
-import { useGoogleLogin } from "@react-oauth/google";
-import toast from "react-hot-toast";
-import { FcGoogle } from "react-icons/fc";
-import { googleLoginApi, loginUserApi } from "@/API/userAPI";
+"use client";
 
-const LoginLayout = () => {
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useGoogleLogin } from "@react-oauth/google";
+import { toast } from "sonner";
+import { ArrowLeft } from "lucide-react";
+import AuthForm from "@/Components/Login/AuthForm";
+import {
+  googleLoginApi,
+  loginUserApi,
+} from "@/API/userAPI";
+import { fetchWishlist } from "@/redux/actions/wishlistActions";
+import { fetchCart } from "@/redux/actions/cartActions";
+
+export default function LoginLayout() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  /* ---------- GOOGLE LOGIN ---------- */
   const loginWithGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        const data = await googleLoginApi(tokenResponse.access_token)
+        const data = await googleLoginApi(tokenResponse.access_token);
 
         dispatch({
           type: "SET_USER",
@@ -29,24 +37,24 @@ const LoginLayout = () => {
           },
         });
 
-        toast.success("Welcome back 🤎");
-        navigate("/home");
-      } catch (error) {
-        console.error(error);
+        dispatch(fetchWishlist());
+        dispatch(fetchCart());
+
+        toast.success("Welcome back");
+        navigate("/");
+      } catch (err) {
         toast.error("Google login failed");
       }
     },
-    onError: () => {
-      toast.error("Google Login cancelled");
-    },
   });
 
-  const submitLogin = async (e) => {
+  /* ---------- EMAIL LOGIN ---------- */
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const data=await loginUserApi(email,password);
+      const data = await loginUserApi(email, password);
 
       dispatch({
         type: "SET_USER",
@@ -56,127 +64,77 @@ const LoginLayout = () => {
         },
       });
 
+      dispatch(fetchWishlist());
+      dispatch(fetchCart());
+
       navigate("/");
     } catch (err) {
-      console.error("Login error:", err.response?.data || err.message);
-      toast.error(err.response?.data?.message || "Login failed");
-      setPassword("");
+      toast.error("Login failed");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <Login
-      HeadContent={`Sign in <br /> to Leather Haven`}
-      mainContent={
-        <>
-          {/* Brand block */}
-          <div className="space-y-2 mt-6 text-center md:text-left md:ml-[100px]">
-            <h2 className="font-serif text-4xl md:text-5xl font-light tracking-tight text-foreground">
-              LEATHER
-              <br />
-              HAVEN
+    <div className="min-h-screen bg-[#fcfcfc] flex items-center justify-center p-6  selection:bg-[#8bf606] selection:text-black">
+      <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+        {/* ============ LEFT IMAGE (same as register) ============ */}
+        <div className="relative group hidden lg:block">
+          <div className="absolute -inset-1 bg-[#8bf606]/10 rounded-[2rem] blur-xl opacity-50"></div>
+
+          <div className="relative rounded-[2rem] overflow-hidden border border-gray-100 shadow-2xl shadow-gray-200 aspect-[4/5] bg-white">
+            <img
+              src="/login8.png"
+              alt="Login Visual"
+              className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700"
+            />
+          </div>
+        </div>
+
+        {/* ============ RIGHT FORM ============ */}
+        <div className="w-full max-w-md mx-auto">
+
+          <div className="mb-10">
+            <button
+              onClick={() => navigate(-1)}
+              className="w-10 h-10 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center text-gray-600 mb-8 hover:bg-gray-50 transition"
+            >
+              <ArrowLeft size={20} />
+            </button>
+
+            <h1 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">
+              Welcome Back
+            </h1>
+
+            <h2 className="text-3xl font-bold text-primary tracking-tight">
+              Login to Continue
             </h2>
-            <div className="h-0.5 w-12 bg-linear-to-r from-transparent via-accent to-transparent md:mx-0 mx-auto my-4" />
-            <p className="text-xs tracking-widest text-muted-foreground font-light">
-              PREMIUM CRAFTED LEATHER
+
+            <p className="mt-4 text-gray-500 text-sm">
+              Don’t have an account?
+              <Link
+                to="/register"
+                className="text-black font-semibold hover:text-[#7ad805] border-b-2 border-[#8bf606] ml-1"
+              >
+                Sign up
+              </Link>
             </p>
           </div>
 
-          {/* Google login button */}
-          <div className="w-full max-w-[340px] mx-auto md:mx-0 md:ml-[100px] mt-6">
-            <button
-              type="button"
-              onClick={() => loginWithGoogle()}
-              className="flex items-center justify-center gap-2 w-full border border-border/50 bg-card hover:bg-muted/60 text-foreground text-sm py-2.5 rounded-lg transition-all"
-            >
-              <FcGoogle size={22} />
-              <span className="tracking-wide">Continue with Google</span>
-            </button>
-          </div>
-
-          {/* Divider */}
-          <div className="flex items-center justify-center mt-4 mb-2 w-full max-w-[340px] mx-auto md:mx-0 md:ml-[100px]">
-            <div className="flex-1 h-px bg-border/60" />
-            <span className="px-3 text-xs text-muted-foreground uppercase tracking-[0.2em]">
-              or
-            </span>
-            <div className="flex-1 h-px bg-border/60" />
-          </div>
-
-          {/* Email/password form */}
-          <form
-            onSubmit={submitLogin}
-            className="space-y-6 w-full max-w-[340px] mx-auto md:mx-0 md:ml-[100px] mt-2"
-          >
-            <div className="space-y-2 text-left">
-              <label
-                htmlFor="email"
-                className="block text-xs tracking-widest text-muted-foreground font-light uppercase"
-              >
-                Email Address
-              </label>
-              <input
-                id="email"
-                type="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full border border-border/50 bg-card text-foreground placeholder:text-muted-foreground/60 px-3 py-2 rounded-lg focus:border-accent focus:ring-2 focus:ring-accent/30 outline-none transition-all"
-              />
-            </div>
-
-            <div className="space-y-2 text-left">
-              <label
-                htmlFor="password"
-                className="block text-xs tracking-widest text-muted-foreground font-light uppercase"
-              >
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full border border-border/50 bg-card text-foreground placeholder:text-muted-foreground/60 px-3 py-2 rounded-lg focus:border-accent focus:ring-2 focus:ring-accent/30 outline-none transition-all"
-              />
-            </div>
-
-            <div className="text-right">
-              <Link
-                to="/forgot-password"
-                className="text-xs text-muted-foreground hover:text-accent transition-colors font-light"
-              >
-                Forgot password?
-              </Link>
-            </div>
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-light tracking-widest uppercase text-sm h-11 transition-all rounded-lg disabled:opacity-60 disabled:cursor-not-allowed"
-            >
-              {isLoading ? "Signing in..." : "Sign In"}
-            </button>
-
-            <div className="pt-4 border-t border-border/30 text-center text-sm text-muted-foreground font-light">
-              Don&apos;t have an account?{" "}
-              <Link
-                to="/register"
-                className="text-foreground hover:text-accent font-medium transition-colors"
-              >
-                Register here
-              </Link>
-            </div>
-          </form>
-        </>
-      }
-    />
+          <AuthForm
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
+            isLoading={isLoading}
+            handleSubmit={handleSubmit}
+            loginWithGoogle={loginWithGoogle}
+          />
+        </div>
+      </div>
+    </div>
   );
-};
-
-export default LoginLayout;
+}

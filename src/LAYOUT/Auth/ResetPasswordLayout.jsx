@@ -78,7 +78,7 @@ const ResetPasswordLayout = () => {
                 Set a new password
               </h2>
               <p className="text-xs md:text-sm text-muted-foreground font-light">
-                Choose a strong password to secure your Leather Haven account.
+                Choose a strong password to secure your CHIP-64 account.
               </p>
             </div>
 

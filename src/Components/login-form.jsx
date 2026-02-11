@@ -23,9 +23,9 @@ export default function LoginForm() {
       {/* Brand Logo */}
       <div className="space-y-2">
         <h1 className="font-serif text-6xl font-light tracking-tight text-foreground">
-          LEATHER
+          CHIP
           <br />
-          HAVEN
+          64
         </h1>
         <div
           className="h-0.5 w-12 bg-linear-to-r from-transparent via-accent to-transparent mx-auto my-4" />

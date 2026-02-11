@@ -1,77 +1,42 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
 import ProductCard from "@/Components/Cards/ProductCard";
 
-export default function ProductGrid({
-  products = [],
-  category,        // 🔥 use this instead of selectedCategory
-  sortBy,
-  displayCount,
-}) {
-  // 🟩 Filter by category
-  const filtered = category === "all"
-    ? products
-    : products.filter((p) => {
-        // p.category might be ObjectId string, or populated { _id, name }
-        const catId = p.category?._id ?? p.category;
-        return String(catId) === String(category);
-      });
+export default function ProductGrid({ products }) {
+  if (products.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <div className="w-24 h-24 rounded-full bg-[#F6F6F6] flex items-center justify-center mb-4">
+          <svg
+            className="w-12 h-12 text-[#121212]/30"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1.5}
+              d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+            />
+          </svg>
+        </div>
 
-  // 🟩 Sorting logic
-  const sorted = [...filtered].sort((a, b) => {
-    switch (sortBy) {
-      case "bestselling":
-        return b.soldCount - a.soldCount;
-
-      case "price-asc":
-        return a.basePrice - b.basePrice;
-
-      case "price-desc":
-        return b.basePrice - a.basePrice;
-
-      case "new":
-      default:
-        return new Date(b.createdAt) - new Date(a.createdAt);
-    }
-  });
-
-  // 🟩 Pagination
-  const productsToDisplay = sorted.slice(0, displayCount);
+        <h3 className="text-xl font-medium text-[#121212] mb-2">
+          No products found
+        </h3>
+        <p className="text-[#121212]/60">
+          Try adjusting your filters to see more results
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <AnimatePresence mode="popLayout">
-      <motion.div
-        layout
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12"
-      >
-        {productsToDisplay.map((product, index) => (
-          <motion.div
-            key={product._id}
-            layout
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{
-              duration: 0.4,
-              ease: "easeOut",
-              delay: index * 0.05,
-            }}
-          >
-            <ProductCard
-              product={{
-                id: product._id,
-                name: product.name,
-                price: product.basePrice,
-                image: product.mainImage,
-                badge: product.badges?.[0] || null,
-                category: product.category,
-                slug: product.slug,
-              }}
-            />
-          </motion.div>
-        ))}
-      </motion.div>
-    </AnimatePresence>
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+      {products.map((product) => (
+        <ProductCard key={product.id} product={product} />
+      ))}
+    </div>
   );
 }

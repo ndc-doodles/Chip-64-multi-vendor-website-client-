@@ -2,10 +2,10 @@
 
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import ProductDetail from "@/Layout/Products/ProductDetail";
 import { toast } from "sonner";
+import ProductDetail from "@/Layout/Products/ProductDetails";
 import { getUserProductBySlugApi } from "@/API/userAPI";
-
+import HeaderLayout from "@/Layout/Header/HeaderLayout";
 export default function ProductDetailPage() {
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
@@ -14,33 +14,46 @@ export default function ProductDetailPage() {
   useEffect(() => {
     if (!slug) return;
 
-    async function fetchProduct() {
+    const fetchProduct = async () => {
       try {
-        const data = await getUserProductBySlugApi(slug);
+        const res = await getUserProductBySlugApi(slug);
 
-        if (!data.success) {
+        if (!res?.success) {
           toast.error("Product not found");
-          setLoading(false);
           return;
         }
+        setProduct(res.product);
 
-        setProduct(data.product);
-      } catch (err) {
+
+      } catch (error) {
         toast.error("Failed to load product");
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     fetchProduct();
   }, [slug]);
+ 
 
-  if (loading) return <p className="p-10 text-center">Loading...</p>;
-  if (!product) return <p className="p-10 text-center">Product not found.</p>;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-muted-foreground">
+        Loading...
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-screen flex items-center justify-center ">
+        Product not found
+      </div>
+    );
+  }
 
   return (
-    <main className="min-h-screen bg-background">
-      <ProductDetail product={product} />
-    </main>
+  <ProductDetail product={product} />
+
   );
 }

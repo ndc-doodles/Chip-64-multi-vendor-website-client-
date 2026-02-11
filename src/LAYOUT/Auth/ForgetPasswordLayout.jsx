@@ -38,14 +38,16 @@ const ForgotPasswordLayout = () => {
         <>
           {/* Branding */}
           <div className="space-y-2 mt-6 text-center md:text-left md:ml-[100px]">
-            <h2 className="font-serif text-4xl md:text-5xl font-light tracking-tight text-foreground">
-              LEATHER
+            <h2 className=" text-4xl md:text-5xl font-medium tracking-tight text-foreground">
+              CHIP
               <br />
-              HAVEN
+              <span className="text-primary">
+                             64
+              </span>
             </h2>
             <div className="h-0.5 w-12 bg-linear-to-r from-transparent via-accent to-transparent md:mx-0 mx-auto my-4" />
-            <p className="text-xs tracking-widest text-muted-foreground font-light">
-              PREMIUM CRAFTED LEATHER
+            <p className="text-xs tracking-widest text-muted-foreground font-medium">
+              Everything Tech. One Place
             </p>
           </div>
 
@@ -86,7 +88,7 @@ const ForgotPasswordLayout = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-light tracking-widest uppercase text-sm h-11 transition-all rounded-lg disabled:opacity-60"
+              className="w-full bg-primary hover:bg-primary/90  font-light tracking-widest uppercase text-sm h-11 transition-all rounded-lg disabled:opacity-60 text-black"
             >
               {isLoading ? "Sending..." : "Send Reset Code"}
             </button>

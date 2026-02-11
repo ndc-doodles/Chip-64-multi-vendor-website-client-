@@ -1,84 +1,89 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useMemo } from "react";
+import { Heart } from "lucide-react";
 
-export default function ImageGallery({ images = [], variant, className = "" }) {
-  const [active, setActive] = useState(0);
+export default function ImageGallery({
+  images = [],
+  productName,
+  loved = false,
+  onToggleWishlist,
+}) {
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
-  const [transformOrigin, setTransformOrigin] = useState("50% 50%");
-  const containerRef = useRef(null);
+  const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
 
-  // Reset image index when variant changes
-  useEffect(() => {
-    setActive(0);
-  }, [variant]);
+  const mainImage = useMemo(
+    () => images[selectedImageIndex],
+    [images, selectedImageIndex]
+  );
 
-  // Track mouse for zoom origin
-  const onMouseMove = (e) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
-    setTransformOrigin(`${x}% ${y}%`);
+    setZoomPosition({ x, y });
   };
 
-  const displayImages = images.length ? images : ["/placeholder.svg"];
-
   return (
-    <div className={`w-full ${className}`}>
-      {/* MAIN IMAGE */}
+    <div className="flex flex-col gap-4">
+      {/* Main Image */}
       <div
-        ref={containerRef}
-        onMouseMove={onMouseMove}
+        className="relative bg-muted rounded-lg overflow-hidden aspect-square cursor-zoom-in"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
-        className="relative w-full overflow-hidden rounded-2xl border border-border bg-card"
-        style={{ aspectRatio: "4/4" }}
+        onMouseMove={handleMouseMove}
       >
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={`${displayImages[active]}-${active}`}
-            src={displayImages[active]}
-            alt={`Product image ${active + 1}`}
-            loading="lazy"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, scale: isHovering ? 1.6 : 1 }} // hover zoom only
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="absolute inset-0 h-full w-full object-cover"
-            style={{
-              transformOrigin,
-              transition: "transform 180ms ease-out",
-            }}
+        {/* ❤️ Luxury Wishlist Button */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleWishlist?.();
+          }}
+          className="absolute top-4 right-4 z-10 w-11 h-11 rounded-full 
+                     bg-white/80 backdrop-blur flex items-center justify-center
+                     shadow-sm hover:scale-105 transition"
+          aria-label="Add to wishlist"
+        >
+          <Heart
+            className={`w-5 h-5 transition ${
+              loved
+                ? "fill-red-500 text-red-500"
+                : "text-gray-700"
+            }`}
           />
-        </AnimatePresence>
+        </button>
 
-        {/* Variant label */}
-        {variant?.color && (
-          <div className="absolute left-3 top-3 rounded-md bg-card/60 px-3 py-1 text-xs font-medium backdrop-blur-sm">
-            {variant.color}
-          </div>
-        )}
+        <img
+          src={mainImage || "/placeholder.svg"}
+          alt={productName}
+          className={`absolute inset-0 w-full h-full object-cover transition-transform duration-300 ${
+            isHovering ? "scale-150" : "scale-100"
+          }`}
+          style={
+            isHovering
+              ? { transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%` }
+              : undefined
+          }
+        />
       </div>
 
-      {/* THUMBNAILS */}
-      <div className="mt-3 flex gap-3 items-center overflow-auto px-1 py-1">
-        {displayImages.map((src, idx) => (
+      {/* Thumbnails */}
+      <div className="flex gap-3">
+        {images.map((image, index) => (
           <button
-            id={`thumb-btn-${idx}`}
-            key={`${src}-${idx}`}
-            onClick={() => setActive(idx)}
-            aria-label={`Show image ${idx + 1}`}
-            className={`relative h-14 w-20 flex-shrink-0 overflow-hidden rounded-md border transition-all 
-              ${active === idx ? "ring-2 ring-accent scale-105" : "border-border hover:scale-105"}
-            `}
+            key={index}
+            onClick={() => setSelectedImageIndex(index)}
+            className={`relative w-20 h-20 rounded-lg overflow-hidden transition-all ${
+              selectedImageIndex === index
+                ? "ring-2 ring-primary ring-offset-2"
+                : "border border-border hover:border-foreground"
+            }`}
           >
             <img
-              src={src}
-              alt={`thumb-${idx + 1}`}
-              className="h-full w-full object-cover"
-              loading="lazy"
+              src={image || "/placeholder.svg"}
+              alt={`${productName} view ${index + 1}`}
+              className="w-full h-full object-cover"
             />
           </button>
         ))}
