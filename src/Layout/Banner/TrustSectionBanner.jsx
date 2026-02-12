@@ -42,7 +42,7 @@ const ChipTrustSection = () => {
   const features = [
     { icon: Zap, title: "Fast Delivery", description: "Priority logistics for mission-critical hardware." },
     { icon: ShieldCheck, title: "Secure Payments", description: "Military-grade encryption for every transaction." },
-    { icon: Users, title: "Multi-Vendor Choice", description: "The world's leading tech brands in one place." },
+    { icon: Users, title: "Tech Choice", description: "The world's leading tech brands in one place." },
     { icon: Headset, title: "24/7 Support", description: "Direct access to our expert engineering team." },
     { icon: RotateCcw, title: "Easy Returns", description: "Transparent, stress-free return processing." }
   ];

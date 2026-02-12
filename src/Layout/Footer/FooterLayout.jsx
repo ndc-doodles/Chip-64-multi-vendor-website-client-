@@ -54,9 +54,9 @@ export default function Footer() {
 
             <ul className="space-y-2">
               <FooterLink to="/about" label="Our Story" />
-              <FooterLink to="/vendors" label="Vendors" />
-              <FooterLink to="/careers" label="Careers" />
-              <FooterLink to="/support" label="Support" />
+              <FooterLink to="/about" label="Vendors" />
+              <FooterLink to="/about" label="Careers" />
+              <FooterLink to="/contact" label="Support" />
             </ul>
           </div>
 
@@ -81,8 +81,9 @@ export default function Footer() {
         <div className="border-t border-black/10 mt-14 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
 
           <p className="text-xs text-black/70 tracking-widest">
-            © 2025 CHIP-64 — All Rights Reserved
-          </p>
+  © 2025 Cybexel. All rights reserved.
+</p>
+
 
           <div className="flex gap-6 text-xs text-black/70">
             <span>Secure Payments</span>
