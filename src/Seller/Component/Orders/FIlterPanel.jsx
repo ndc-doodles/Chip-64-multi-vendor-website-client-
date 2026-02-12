@@ -1,7 +1,7 @@
 'use client'
 
 import { ChevronDown } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/Components/ui/button'
 import { useState } from 'react'
 
 export default function FilterPanel({

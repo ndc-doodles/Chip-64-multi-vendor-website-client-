@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Breadcrumb } from "@/Components/ui/breadcrumb";
+import { Button } from "@/Components/ui/button";
+import { Card } from "@/Components/ui/card";
 import CollectionHeroBar from "@/Components/Collection/CollectionHeroBar";
 import {
   Select,
@@ -13,14 +13,14 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/Components/ui/select";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
+} from "@/Components/ui/sheet";
 
 import ProductCard from "@/Components/Cards/ProductCard";
 import FiltersPanel from "@/Components/Collection/FilterBarCollection";

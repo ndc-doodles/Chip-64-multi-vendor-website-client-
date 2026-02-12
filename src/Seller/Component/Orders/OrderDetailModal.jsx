@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import { X, Copy, Check } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { Button } from '@/Components/ui/button'
+import { Card } from '@/Components/ui/card'
 
 const STATUS_OPTIONS = [
   { value: 'PLACED', label: 'Placed' },

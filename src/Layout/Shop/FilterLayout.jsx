@@ -1,9 +1,9 @@
 "use client";
 
-import { Accordion } from "@/components/ui/accordion";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Slider } from "@/components/ui/slider";
-import { Button } from "@/components/ui/button";
+import { Accordion } from "@/Components/ui/accordion";
+import { Checkbox } from "@/Components/ui/checkbox";
+import { Slider } from "@/Components/ui/slider";
+import { Button } from "@/Components/ui/button";
 import FilterSection from "@/Components/Shop/FilterBar";
 
 const PRICE_PRESETS = [

@@ -8,7 +8,7 @@ import { OrderConfirmation } from "@/Components/Orders/OrderConfirmation";
 import { OrderItems } from "@/Components/Orders/OrderItems";
 import { NextSteps } from "@/Components/Orders/NextSteps";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 import { ChevronRight } from "lucide-react";
 import { getOrderByIdApi } from "@/API/userAPI";
 import { toast } from "sonner";

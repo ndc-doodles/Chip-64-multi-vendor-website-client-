@@ -9,8 +9,8 @@ import FilterSidebar from "@/Layout/Shop/FilterLayout";
 import ProductGrid from "@/Layout/Products/ProductGridShop";
 import ShopPagination from "@/Components/Shop/ShopPagination";
 
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/Components/ui/sheet";
+import { Button } from "@/Components/ui/button";
 import { SlidersHorizontal } from "lucide-react";
 import HeaderLayout from "@/Layout/Header/HeaderLayout";
 /* API */
