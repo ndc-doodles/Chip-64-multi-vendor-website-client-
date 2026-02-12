@@ -266,3 +266,12 @@ export const getRecentlyViewedApi=async()=>{
   const res=await api.get("/user/recently-viewed")
   return res.data
 }
+
+export const accountStatsApi=async ()=>{
+  const res= await api.get("/user/account-stats")
+  return res.data
+}
+export const sendContactApi = async (payload) => {
+  const res = await api.post("/user/contact", payload); 
+  return res.data;
+};

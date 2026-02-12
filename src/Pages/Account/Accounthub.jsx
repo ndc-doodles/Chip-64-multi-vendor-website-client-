@@ -12,11 +12,29 @@ import {
   LogOut,
   ChevronRight,
 } from "lucide-react";
+import { useEffect, useState } from "react";
+import {accountStatsApi } from "@/API/userAPI";
 
 export default function AccountHub() {
   const user = useSelector((s) => s.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+    const [stats,setStats]=useState({
+      ordersCount:0,
+      addressCount:0
+    })
+
+    useEffect(()=>{
+      const LoadStats=async()=>{
+        try {
+           const data= await accountStatsApi()
+           setStats(data)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      LoadStats()
+    },[])
 
   const logout = async () => {
     await dispatch(logoutUser());
@@ -107,9 +125,9 @@ Hello,{" "}
         {/* Stats Strip - Minimalist Green Touch */}
         <div className="grid grid-cols-3 gap-6 mb-10">
           {[
-            { label: "Orders", val: "12", color: "text-gray-900" },
+            { label: "Orders", val: stats.ordersCount, color: "text-gray-900" },
             { label: "Wishlist", val: wishlistItemsCount, color: "text-[#8DB600]" },
-            { label: "Addresses", val: "3", color: "text-gray-900" }
+            { label: "Addresses", val: stats.addressCount, color: "text-gray-900" }
           ].map((stat, i) => (
             <div key={i} className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
               <p className={`text-2xl font-bold ${stat.color}`}>{stat.val}</p>

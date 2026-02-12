@@ -1,4 +1,7 @@
 "use client";
+import { useState } from "react";
+import { sendContactApi } from "@/API/userAPI";
+import { toast } from "sonner";
 
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
@@ -10,6 +13,40 @@ gsap.registerPlugin(ScrollTrigger);
 
 const ContactPage = () => {
   const containerRef = useRef(null);
+const [form, setForm] = useState({
+  name: "",
+  email: "",
+  orderId: "",
+  message: "",
+});
+
+const [loading, setLoading] = useState(false);
+const handleChange = (e) => {
+  setForm({ ...form, [e.target.name]: e.target.value });
+};
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    setLoading(true);
+
+    await sendContactApi(form);
+
+    toast.success("Message sent successfully!");
+
+    setForm({
+      name: "",
+      email: "",
+      orderId: "",
+      message: "",
+    });
+
+  } catch (err) {
+    toast.error("Failed to send message");
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -134,7 +171,7 @@ const ContactPage = () => {
           {/* RIGHT IMAGE */}
           <div className="hero-visual hidden lg:flex items-center justify-center">
             <img
-              src="/lapAbout.png"
+              src="/lapc.jpg"
               alt="Customer support"
               className="rounded-3xl grayscale opacity-60 shadow-2xl"
             />
@@ -198,14 +235,20 @@ const ContactPage = () => {
         Send a <span className="text-[#8bf606]">Message</span>
       </h2>
 
-      <form className="space-y-6">
+      <form className="space-y-6" onSubmit={handleSubmit}>
 
         <div className="grid md:grid-cols-2 gap-6">
           <input
             className="input-item w-full p-5 rounded-xl border border-black/10 focus:border-[#8bf606] outline-none"
+            name="name"
+            value={form.name}
+            onChange={handleChange}
             placeholder="Full Name"
           />
           <input
+           name="email"
+            value={form.email}
+            onChange={handleChange}
             className="input-item w-full p-5 rounded-xl border border-black/10 focus:border-[#8bf606] outline-none"
             placeholder="Email Address"
           />
@@ -214,15 +257,22 @@ const ContactPage = () => {
         <input
           className="input-item w-full p-5 rounded-xl border border-black/10 focus:border-[#8bf606] outline-none"
           placeholder="Order ID (optional)"
+          name="orderId"
+          value={form.orderId}
+          onChange={handleChange}
+
         />
 
         <textarea
           rows="5"
           className="input-item w-full p-5 rounded-xl border border-black/10 focus:border-[#8bf606] outline-none resize-none"
           placeholder="How can we help you today?"
+          name="message"
+          value={form.message}
+          onChange={handleChange}
         />
 
-        <button className="w-fit bg-black text-white px-10 py-4 rounded-full font-bold hover:bg-[#8bf606] hover:text-black transition">
+        <button className="w-fit bg-black text-white px-10 py-4 rounded-full font-bold hover:bg-[#8bf606] hover:text-black transition" type="submit" disabled={loading}>
           Send Message
         </button>
 
@@ -233,7 +283,7 @@ const ContactPage = () => {
     {/* RIGHT IMAGE */}
     <div className="form-image hidden lg:block rounded-3xl overflow-hidden shadow-2xl h-[520px]">
       <img
-        src="/lapAbout.png"
+        src="/iphonelap.jpg"
         alt="Support desk"
         className="w-full h-full object-cover grayscale"
       />

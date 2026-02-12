@@ -26,6 +26,24 @@ export const promoConfig = {
     heading: "Laptop Deals",
     description: "Premium laptops for productivity and creativity.",
   },
+  cctv: {
+  image: "/cctvs.png",   // put your image in public folder
+  titleBg: "Top\nCCTV",
+  tag: "Smart Security",
+  heading: "CCTV Sale",
+  description: "Advanced surveillance systems to protect your home & business.",
+  rotate: 5,
+},
+cpu: {
+  image: "/cpuu1.png",   // put cpu image inside public folder
+  titleBg: "Top\nCPU",
+  tag: "High Performance",
+  heading: "CPU Mega Sale",
+  description: "Powerful processors & desktop PCs built for gaming, work, and heavy tasks.",
+  rotate: -3,
+},
+
+
 
   // optional fallback
   default: {
