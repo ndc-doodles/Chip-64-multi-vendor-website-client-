@@ -58,6 +58,7 @@ import SellerWalletPage from "./Seller/Pages/SellerWalletPage";
 import AdminPayoutRequestPage from "./Admin/Pages/Payout/AdminPayoutRequest";
 import About from "./Pages/About/About";
 import ContactPage from "./Pages/Contact/ContactPage";
+import GlobalAuthModal from "./Components/AuthModal/GlobalAuthModal";
 function App() {
   const dispatch = useDispatch();
 const user = useSelector((state) => state.user.user);
@@ -166,6 +167,7 @@ useEffect(() => {
         <Route path="/seller/settings" element={<SellerSettings/>}/>
         <Route path="/seller/wallet" element={<SellerWalletPage/>}/>
       </Routes>
+      <GlobalAuthModal/>
     </BrowserRouter>
   );
 }

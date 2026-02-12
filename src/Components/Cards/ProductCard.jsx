@@ -11,6 +11,7 @@ import { isProductWishlisted } from "@/Utils/WishlistUtils";
 import { toast } from "sonner";
 import { addToCart } from "@/API/userAPI";
 import { fetchCart } from "@/redux/actions/cartActions";
+import { openAuthModal } from "@/redux/actions/authModalActions";
 const COLOR_MAP = {
   black: "#000000",
   brown: "#5C4033",
@@ -45,10 +46,11 @@ const handleAddToCart = async (e) => {
   e.stopPropagation();
 
   try {
-    if (!user || !accessToken) {
-      toast.error("Please login first");
-      return;
-    }
+ if (!user || !accessToken) {
+  dispatch(openAuthModal());
+  return;
+}
+
 
     if (!defaultVariant) return;
 
@@ -106,11 +108,21 @@ const handleAddToCart = async (e) => {
     >
       {/* ❤️ Wishlist */}
      <button
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    dispatch(toggleWishlist({ productId: product._id ,variantId:defaultVariant._id}));
-  }}
+ onClick={(e) => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  if (!user || !accessToken) {
+    dispatch(openAuthModal());
+    return;
+  }
+
+  dispatch(toggleWishlist({
+    productId: product._id,
+    variantId: defaultVariant._id
+  }));
+}}
+
   className="absolute top-2 right-2 z-10"
 >
   <Heart

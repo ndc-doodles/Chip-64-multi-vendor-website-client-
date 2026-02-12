@@ -100,11 +100,29 @@ export default function cartReducer(state = initialCartState, action) {
       return state;
   }
 }
+const initialAuthModalState = {
+  open: false,
+};
+
+function authModalReducer(state = initialAuthModalState, action) {
+  switch (action.type) {
+    case "OPEN_AUTH_MODAL":
+      return { open: true };
+
+    case "CLOSE_AUTH_MODAL":
+      return { open: false };
+
+    default:
+      return state;
+  }
+}
+
 const rootReducer =combineReducers({
     user:userReducer,
     vendor:vendorReducer,
       wishlist: wishlistReducer,
-      cart:cartReducer 
+      cart:cartReducer ,
+      authModal:authModalReducer
 
 })
 const persistConfig={
