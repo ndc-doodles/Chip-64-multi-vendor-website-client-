@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Card } from "@/components/ui/card";
+import { Card } from "@/Components/ui/card";
 import VendorRow from "@/Admin/Components/Vendors/VendorsRow";
 import {
   getVendorsApi,

@@ -6,7 +6,7 @@ import { Plus } from "lucide-react";
 
 import AdminSidebar from "@/Admin/Layout/Sidebar/AdminSidebarLayout";
 import AdminHeader from "@/Admin/Components/Header/AdminHeader";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 
 import BrandList from "@/Admin/Components/Brands/BrandList";
 import BrandRequests from "@/Admin/Components/Brands/BrandRequests";

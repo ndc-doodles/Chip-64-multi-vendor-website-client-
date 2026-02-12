@@ -1,6 +1,6 @@
 
 import { X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 
 export default function AuthRequiredModal({

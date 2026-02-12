@@ -1,6 +1,6 @@
 import { useState } from "react";
 import StarRating from "./StarRating";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 import { toast } from "sonner";
 import { createReviewApi } from "@/API/userAPI";
 

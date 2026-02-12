@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 import { useNavigate } from "react-router-dom";
 
 export default function VendorRow({ vendor, onBlock, onUnblock }) {

@@ -6,7 +6,7 @@ import ReviewSummary from "@/Components/Reviews/ReviewSummary";
 import ReviewCard from "@/Components/Reviews/ReviewCard";
 import WriteReview from "@/Components/Reviews/WriteReview";
 import { getProductReviewsApi } from "@/API/userAPI";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 
 export default function ProductReviews({ product }) {
   const { user } = useSelector((s) => s.user);

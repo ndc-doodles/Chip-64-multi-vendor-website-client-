@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 
 export default function ShopCreativeBanner1() {
   return (

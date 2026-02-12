@@ -1,5 +1,5 @@
-import { Slider } from "@/components/ui/slider";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Slider } from "@/Components/ui/slider";
+import { Checkbox } from "@/Components/ui/checkbox";
 
 export default function FiltersPanel({
   priceRange,

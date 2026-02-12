@@ -1,6 +1,6 @@
 "use client"
 
-import { Card } from "@/components/ui/card"
+import { Card } from "@/Components/ui/card"
 import { Users, Store, ShoppingBag } from "lucide-react"
 
 const stats = [

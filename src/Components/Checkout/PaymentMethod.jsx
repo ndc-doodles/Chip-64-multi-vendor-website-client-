@@ -1,7 +1,7 @@
 "use client";
 
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/Components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/Components/ui/radio-group";
 import { Banknote, CreditCard } from "lucide-react";
 
 export default function PaymentSection({

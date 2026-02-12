@@ -9,8 +9,8 @@ import {
   blockVendorApi,
   unblockVendorApi,
 } from "@/API/adminApi";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card } from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
 import { toast } from "sonner";
 
 /* ============================ PAGE ============================ */

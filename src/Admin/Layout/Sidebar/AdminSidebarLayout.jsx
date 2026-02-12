@@ -14,7 +14,7 @@ import {
   ShieldMinus,
   Currency,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 import SidebarItem from "../../Components/Sidebar/AdminSidebarItem";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";

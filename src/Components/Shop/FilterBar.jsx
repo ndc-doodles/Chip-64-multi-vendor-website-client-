@@ -1,4 +1,4 @@
-import { AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
+import { AccordionItem, AccordionTrigger, AccordionContent } from "@/Components/ui/accordion"
 
 export default function FilterSection({ value, title, children }) {
   return (

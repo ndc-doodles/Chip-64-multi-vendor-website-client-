@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { X, Tag } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 import { getAvailableCouponsApi } from "@/API/userAPI";
 import { toast } from "sonner";
 

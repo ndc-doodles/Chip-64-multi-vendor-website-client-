@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Card } from "@/components/ui/card"
+import { Card } from "@/Components/ui/card"
 import UserRow from "@/Admin/Components/Users/UserRow"
 import { getUsersApi,unblockUserApi,blockUserApi } from "@/API/adminApi"
 import { toast } from "sonner"

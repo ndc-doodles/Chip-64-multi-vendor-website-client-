@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/Components/ui/button";
+import { Input } from "@/Components/ui/input";
 import { CheckCircle2, Tag } from "lucide-react";
 import { toast } from "sonner";
 import CouponModal from "./CouponModal";

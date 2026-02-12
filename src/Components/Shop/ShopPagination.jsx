@@ -8,7 +8,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
+} from "@/Components/ui/pagination";
 
 export default function ShopPagination({
   currentPage,

@@ -1,7 +1,7 @@
 "use client";
  
 import React from "react";
-import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
+import { Carousel, Card } from "@/Components/ui/apple-cards-carousel";
 
 export function VendorCards() {
   const cards = data.map((card, index) => (

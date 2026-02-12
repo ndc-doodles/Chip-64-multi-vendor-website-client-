@@ -1,8 +1,8 @@
 "use client";
 
 import { Heart, ShoppingCart, Share2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Button } from "@/Components/ui/button";
+import { Card } from "@/Components/ui/card";
 import { addToCart, toggleWishlistApi } from "@/API/userAPI";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
