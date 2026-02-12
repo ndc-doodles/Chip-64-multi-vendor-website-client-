@@ -72,8 +72,9 @@ const CategoryGrid = () => {
   src="/cctv.png"
   className="
     absolute
+    
     left-10 md:left-30 bottom-18
-    md:bottom-5
+    md:bottom-0
     w-[280px] md:w-[980px]
     object-contain
   "
@@ -107,21 +108,21 @@ const CategoryGrid = () => {
         >
           <img
             src="/cpu1.png"
-            className="absolute w-[300px] md:w-[300px] object-contain right-13 md:right-60 bottom-0 z-1"
+            className="absolute w-[300px] md:w-[300px] object-contain right-13 md:right-70 bottom-0 z-1"
           />
 
           <img
             src="/cpu2.png"
-            className="absolute w-[350px] md:w-[300px] object-contain left-13 md:left-60 bottom-0 z-0" 
+            className="absolute w-[350px] md:w-[300px] object-contain left-13 md:left-70 bottom-0 z-2" 
           />
 
-          <div className="absolute md:bottom-40 top-2 md:left-30">
+          <div className="absolute md:bottom-42 top-2 md:left-34">
             <p className=" text-[#A8c3bc]  absolute left-1
- text-2xl md:text-7xl font-semibold tracking-tight mb-19 md:mb-0">
+ text-2xl md:text-7xl font-semibold tracking-tight mb-20 md:mb-0">
               <span className="absolute left-7.5 z-1">Buy</span> <br/>
-              <span className="text-primary md:text-7xl  text-3xl left-[10.5px] md:left-0 absolute z-10">CPUs</span>
+              <span className="text-primary md:text-7xl  text-3xl left-[16px]   md:left-0 absolute z-0">CPUs</span>
             </p>
-                 <button className=" whitespace-nowrap  mt-10 md:mt-4 bg-primary text-black px-2 md:px-4 py-1 rounded-md md:rounded-lg text-[6px] md:text-base  font-medium absolute  top-11 md: md:top-35 left-8.5 md:left-12">
+                 <button className=" whitespace-nowrap  mt-10 md:mt-4 bg-primary text-black px-2 md:px-4 py-1 rounded-md md:rounded-lg text-[6px] md:text-base  font-medium absolute  top-11 md: md:top-35 left-9.5 md:left-12">
               Shop Now
             </button>
           </div>
