@@ -129,7 +129,10 @@ useEffect(() => {
              <WishlistPage/>
           </ProtectedRoute>
          }/>
-        <Route path="/account" element={<AccountHub/>}/>
+        <Route path="/account" element={<ProtectedRoute>
+          <AccountHub/>
+        </ProtectedRoute>
+          }/>
         <Route path="/security" element={<SecurityPrivacy/>}/>
         <Route path="/vendor" element={<VendorLoginPage />} />
         <Route path="/security/change-password" element={<ChangePassword/>}/>
