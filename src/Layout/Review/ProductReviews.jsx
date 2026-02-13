@@ -7,10 +7,13 @@ import ReviewCard from "@/Components/Reviews/ReviewCard";
 import WriteReview from "@/Components/Reviews/WriteReview";
 import { getProductReviewsApi } from "@/API/userAPI";
 import { Button } from "@/Components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductReviews({ product }) {
   const { user } = useSelector((s) => s.user);
   const [reviews, setReviews] = useState([]);
+
+  const navigate=useNavigate()
 
   const loadReviews = async () => {
     const res = await getProductReviewsApi(product._id);
@@ -67,7 +70,7 @@ export default function ProductReviews({ product }) {
                 <MessageSquare className="mx-auto text-primary mb-3" size={24} />
                 <p className="text-xs font-black text-gray-900 uppercase tracking-widest mb-2">Have this product?</p>
                 <p className="text-[11px] text-gray-500 font-medium mb-4">Log in to share your thoughts with others.</p>
-                <Button className="w-full bg-primary hover:bg-[#2e8f24] rounded-xl text-[10px] font-black uppercase tracking-widest">
+                <Button onClick={()=>navigate("/login")} className="w-full bg-primary hover:bg-[#2e8f24] rounded-xl text-[10px] font-black uppercase tracking-widest" >
                   Sign In to Review
                 </Button>
               </div>
