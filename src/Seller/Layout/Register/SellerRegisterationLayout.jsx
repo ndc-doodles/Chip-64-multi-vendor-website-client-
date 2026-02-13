@@ -127,7 +127,18 @@ export default function SellerRegisterForm() {
             <Grid>
               <SellerInput label="Full Name" value={form.name} onChange={(e) => update("name", e.target.value)} />
               <SellerInput label="Email" type="email" value={form.email} onChange={(e) => update("email", e.target.value)} />
-              <SellerInput label="Phone" value={form.phone} onChange={(e) => update("phone", e.target.value)} />
+<SellerInput
+  type="tel"
+  inputMode="numeric"
+  pattern="[0-9]*"
+  label="Phone"
+  value={form.phone}
+  maxLength={10}
+
+  onChange={(e) =>
+    update("phone", e.target.value.replace(/\D/g, ""))
+  }
+/>
               <SellerInput label="Password" type="password" value={form.password} onChange={(e) => update("password", e.target.value)} />
             </Grid>
           </Section>
@@ -165,17 +176,43 @@ export default function SellerRegisterForm() {
             <Grid>
               <SellerInput label="City" value={form.city} onChange={(e) => update("city", e.target.value)} />
               <SellerInput label="State" value={form.state} onChange={(e) => update("state", e.target.value)} />
-              <SellerInput label="Pincode" value={form.pincode} onChange={(e) => update("pincode", e.target.value)} />
+<SellerInput
+  type="tel"
+  inputMode="numeric"
+  maxLength={6}
+  label="Pincode"
+  value={form.pincode}
+  onChange={(e) =>
+    update("pincode", e.target.value.replace(/\D/g, ""))
+  }
+/>
             </Grid>
           </Section>
 
           <Section title="Bank Details">
             <Grid>
               <SellerInput label="Account Holder Name" value={form.accountHolderName} onChange={(e) => update("accountHolderName", e.target.value)} />
-              <SellerInput label="Account Number" value={form.accountNumber} onChange={(e) => update("accountNumber", e.target.value)} />
+<SellerInput
+  label="Account Number"
+  value={form.accountNumber}
+  onChange={(e) =>
+    update("accountNumber", e.target.value.replace(/\D/g, ""))
+  }
+/>
               <SellerInput label="IFSC Code" value={form.ifsc} onChange={(e) => update("ifsc", e.target.value)} />
               <SellerInput label="Bank Name" value={form.bankName} onChange={(e) => update("bankName", e.target.value)} />
-              <SellerInput label="UPI ID (Optional)" value={form.upiId} onChange={(e) => update("upiId", e.target.value)} />
+<SellerInput
+  label="UPI ID (Optional)"
+  value={form.upiId}
+  onChange={(e) =>
+    update(
+      "upiId",
+      e.target.value
+        .toLowerCase()
+        .replace(/[^a-z0-9@._]/g, "")
+    )
+  }
+/>
             </Grid>
           </Section>
         </>

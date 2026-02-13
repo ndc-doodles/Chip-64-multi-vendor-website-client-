@@ -96,7 +96,7 @@ export default function AddressSection({
         </div>
 
         {!showForm && (
-          <Button variant="outline" onClick={() => setShowForm(true)}>
+          <Button variant="outline" onClick={() => setShowForm(true)} className="cursor-pointer">
             Add New Address
           </Button>
         )}

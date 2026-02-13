@@ -1,5 +1,5 @@
 import SellerRegisterForm from "../Layout/Register/SellerRegisterationLayout"
-
+import { Link } from "react-router-dom"
 export default function SellerRegisterPage() {
   return (
     <section className="min-h-screen flex items-center justify-center px-4 py-16">
@@ -29,6 +29,26 @@ export default function SellerRegisterPage() {
             <li>• Dedicated seller dashboard</li>
             <li>• Manual approval for quality control</li>
           </ul>
+        <Link
+  to="/seller"
+  className="
+    inline-flex items-center gap-2
+    mt-5 px-5 py-2
+    text-sm font-medium
+    text-primary
+    border border-primary/40
+    rounded-full
+    cursor-pointer
+    hover:border-primary
+    hover:gap-3
+    transition-all duration-300
+  "
+>
+  Already a vendor? Sign in →
+</Link>
+
+
+
         </div>
 
         {/* RIGHT: Form Card */}

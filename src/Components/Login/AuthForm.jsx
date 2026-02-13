@@ -37,7 +37,7 @@ export default function AuthForm({
       <button
         type="button"
         onClick={loginWithGoogle}
-        className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-xl py-4 shadow-sm hover:bg-gray-50 transition mb-6"
+        className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-xl py-4 shadow-sm hover:bg-gray-50 transition mb-6 cursor-pointer"
       >
         <FcGoogle size={22} />
         Continue with Google
@@ -89,7 +89,7 @@ export default function AuthForm({
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full mt-6 bg-primary hover:bg-black text-black hover:text-primary font-bold py-4 rounded-xl flex items-center justify-center  transition disabled:opacity-60"
+          className="w-full mt-6 bg-primary hover:bg-black text-black hover:text-primary font-bold py-4 rounded-xl flex items-center justify-center  transition disabled:opacity-60 cursor-pointer"
         >
           {isLoading ? "Signing in..." : "Sign In"}
         </button>

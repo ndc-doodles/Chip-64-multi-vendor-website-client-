@@ -166,6 +166,7 @@ if (!items.length) {
               text-sm sm:text-base
               bg-secondary
               text-black
+              cursor-pointer
             "
             onClick={() => navigate("/shop")}
           >
@@ -232,6 +233,7 @@ if (!items.length) {
             text-sm sm:text-base
             bg-primary
             text-black
+            cursor-pointer
           "
           onClick={() => navigate("/checkout")}
         >

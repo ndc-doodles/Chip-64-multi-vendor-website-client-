@@ -9,7 +9,7 @@ export default function StorageSelector({ storageOptions, selectedStorage, onSel
           <button
             key={s}
             onClick={() => onSelect(s)}
-            className={`px-4 py-2 rounded-lg border text-sm transition
+            className={`px-4 py-2 rounded-lg border text-sm transition cursor-pointer
               ${
                 selectedStorage === s
                   ? "border-foreground bg-foreground text-background"

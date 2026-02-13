@@ -115,7 +115,7 @@ export default function LoginLayout() {
               Don’t have an account?
               <Link
                 to="/register"
-                className="text-black font-semibold hover:text-[#7ad805] border-b-2 border-[#8bf606] ml-1"
+                className="text-black font-semibold hover:text-[#7ad805] border-b-2 border-[#8bf606] ml-1 "
               >
                 Sign up
               </Link>

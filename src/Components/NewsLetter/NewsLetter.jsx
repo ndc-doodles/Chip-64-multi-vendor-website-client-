@@ -43,7 +43,7 @@ const Newsletter = () => {
               </div>
               <button
                 type="submit"
-                className="w-full bg-primary hover:bg-[#7ad805] text-black font-bold py-4 rounded-xl transition-all transform hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2"
+                className="w-full bg-primary hover:bg-[#7ad805] text-black font-bold py-4 rounded-xl transition-all transform hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
               >
                 Subscribe Now
                 <Send size={18} />

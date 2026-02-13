@@ -84,7 +84,8 @@ const specs = getDisplayAttributes(item.category, item.attributes);
             <Heart className="w-4 h-4 fill-current text-destructive" />
           </Button>
 
-          <Button size="sm"  className="flex-1 bg-secondary text-black" onClick={handleAddToCart}>
+          <Button size="sm"  className="flex-1 bg-secondary text-black cursor-pointer
+          " onClick={handleAddToCart}>
             Add to Cart
           </Button>
         </div>

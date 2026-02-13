@@ -206,6 +206,7 @@ const current = strengthMap[score];
           transition-all
           disabled:opacity-60
           group
+          cursor-pointer
         "
       >
         <span>

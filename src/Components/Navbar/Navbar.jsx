@@ -55,17 +55,17 @@ export default function Navbar({ isMenuOpen = false, onToggleMenu = () => {} ,co
 
           {/* Desktop Navigation */}
           <div className="hidden xl:flex items-center gap-1">
-            <Link to="/" className="px-4 py-2 text-sm font-medium text-black dark:text-gray-300 hover:text-secondary dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-lg transition-all duration-200">
+            <Link to="/" className="px-4 py-2 text-sm font-medium text-black dark:text-gray-300 hover:text-secondary dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-lg transition-all duration-200 cursor-pointer">
               Home
             </Link>
-            <Link to="/shop" className="px-4 py-2 text-sm font-medium text-black dark:text-gray-300 hover:text-secondary dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-lg transition-all duration-200">
+            <Link to="/shop" className="px-4 py-2 text-sm font-medium text-black dark:text-gray-300 hover:text-secondary dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-lg transition-all duration-200 cursor-pointer">
               Shop
             </Link>
           
-            <Link to="/about" className="px-4 py-2 text-sm font-medium text-black dark:text-gray-300 hover:text-secondary dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-lg transition-all duration-200">
+            <Link to="/about" className="px-4 py-2 text-sm font-medium text-black dark:text-gray-300 hover:text-secondary dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-lg transition-all duration-200 cursor-pointer">
               About
             </Link>
-            <Link to="/contact" className="px-4 py-2 text-sm font-medium text-black dark:text-gray-300 hover:text-secondary dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-lg transition-all duration-200">
+            <Link to="/contact" className="px-4 py-2 text-sm font-medium text-black dark:text-gray-300 hover:text-secondary dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-lg transition-all duration-200 cursor-pointer">
               Contact
             </Link>
 
@@ -74,7 +74,7 @@ export default function Navbar({ isMenuOpen = false, onToggleMenu = () => {} ,co
               to="/seller/register"
               className="ml-6 relative inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold 
  rounded-full hover:shadow-lg  hover:bg-secondary-foreground hover:text-primary hover:scale-105 transition-all duration-200 overflow-hidden group
- bg-primary text-black 
+ bg-primary text-black  cursor-pointer
  "
             >
               <span className="relative z-10 ">Become a Seller</span>
@@ -93,7 +93,7 @@ export default function Navbar({ isMenuOpen = false, onToggleMenu = () => {} ,co
           <div className="flex items-center gap-2  hover:text-secondary">
             {/* 🔍 Mobile Search Toggle */}
 <button
-  className="xl:hidden p-2.5 rounded-full hover:bg-gray-100 transition"
+  className="xl:hidden p-2.5 rounded-full hover:bg-gray-100 transition cursor-pointer"
   onClick={() => setMobileSearchOpen((s) => !s)}
   aria-label="Search"
 >
@@ -114,7 +114,7 @@ export default function Navbar({ isMenuOpen = false, onToggleMenu = () => {} ,co
 
             {/* Wishlist */}
            <button
-  className="relative p-2.5 hover:bg-white dark:hover:bg-gray-800 rounded-full transition-all duration-200 hover:scale-110 group-hover:text-blue-600"
+  className="relative p-2.5 hover:bg-white dark:hover:bg-gray-800 rounded-full transition-all duration-200 hover:scale-110 group-hover:text-blue-600 cursor-pointer"
   aria-label="Wishlist"
   onClick={() => navigate("/wishlist")}
 >
@@ -145,7 +145,7 @@ export default function Navbar({ isMenuOpen = false, onToggleMenu = () => {} ,co
 
             {/* Cart */}
         <button
-  className="relative p-2.5 hover:bg-gray-100 hover:text-red- dark:hover:bg-gray-800 hover:rounded-full transition-all duration-200 hover:scale-110"
+  className="relative p-2.5 hover:bg-gray-100 hover:text-red- dark:hover:bg-gray-800 hover:rounded-full transition-all duration-200 hover:scale-110 cursor-pointer"
   aria-label="Wishlist"
   onClick={() => navigate("/cart")}
 >
@@ -181,7 +181,7 @@ export default function Navbar({ isMenuOpen = false, onToggleMenu = () => {} ,co
             <div className="relative group">
              {/* User */}
 <button
-  className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all duration-200 hover:scale-110 "
+  className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all duration-200 hover:scale-110 cursor-pointer"
   aria-label="Account"
   onClick={() => navigate("/account")}
 >
@@ -255,17 +255,17 @@ export default function Navbar({ isMenuOpen = false, onToggleMenu = () => {} ,co
       {navOpen && (
         <div className="xl:hidden border-t border-gray-200/50 dark:border-gray-800/50 bg-white/95 dark:bg-gray-950/95 backdrop-blur-xl">
           <div className="px-4 py-4 space-y-1">
-            <Link to="/home" className="block px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-lg transition-all duration-200">
+            <Link to="/" className="block px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-lg transition-all duration-200 cursor-pointer">
               Home
             </Link>
-            <Link to="/shop" className="block px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-lg transition-all duration-200">
+            <Link to="/shop" className="block px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-lg transition-all duration-200 cursor-pointer">
               Shop
             </Link>
             
-            <Link to="/about" className="block px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-lg transition-all duration-200">
+            <Link to="/about" className="block px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-lg transition-all duration-200 cursor-pointer">
               About
             </Link>
-            <Link to="/contact" className="block px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-lg transition-all duration-200">
+            <Link to="/contact" className="block px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-lg transition-all duration-200 cursor-pointer">
               Contact
             </Link>
             <Link

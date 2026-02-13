@@ -221,7 +221,7 @@ export default function ProductInfo({
         </div>
       </div>
 
-      <Button onClick={onAddToCart} disabled={availableStock === 0} size="lg" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold py-3">
+      <Button onClick={onAddToCart} disabled={availableStock === 0} size="lg" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold py-3 cursor-pointer">
         {availableStock === 0 ? "Out of Stock" : "Add to Cart"}
       </Button>
 

@@ -1,127 +1,220 @@
-"use client"
+"use client";
 
-import { Card } from "@/Components/ui/card"
-import { Users, Store, ShoppingBag } from "lucide-react"
+import { useEffect, useState } from "react";
+import { Card } from "@/Components/ui/card";
+import { fetchDashboardApi } from "@/API/adminApi";
 
-const stats = [
-  {
-    label: "Total Users",
-    value: "1,247",
-    icon: Users,
-    change: "+12% from last month",
-  },
-  {
-    label: "Vendors",
-    value: "89",
-    icon: Store,
-    change: "+5 new this month",
-  },
-  {
-    label: "Orders",
-    value: "3,421",
-    icon: ShoppingBag,
-    change: "+18% from last month",
-  },
-]
+import {
+  Users,
+  Store,
+  ShoppingBag,
+  IndianRupee,
+  Percent,
+} from "lucide-react";
+
+import {
+  LineChart,
+  Line,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+} from "recharts";
 
 export function AdminDashboardContent() {
+  const [data, setData] = useState(null);
+  const [range, setRange] = useState("daily");
+  const [loading, setLoading] = useState(true);
+
+  /* ================= FETCH DASHBOARD ================= */
+  useEffect(() => {
+    const load = async () => {
+      try {
+        setLoading(true);
+        const res = await fetchDashboardApi(range);
+        setData(res);
+      } catch (err) {
+        console.error("Dashboard error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    load();
+  }, [range]);
+
+  if (loading) {
+    return (
+      <div className="p-6 text-sm text-muted-foreground">
+        Loading dashboard...
+      </div>
+    );
+  }
+
+  const { stats, revenueChart, recentOrders, recentVendors } = data;
+
+  /* ================= STAT CARDS ================= */
+  const statCards = [
+    {
+      label: "Revenue",
+      value: `₹${stats.totalSales.toLocaleString()}`,
+      icon: IndianRupee,
+      color: "text-green-600",
+    },
+    {
+      label: "Commission",
+      value: `₹${stats.totalCommission.toLocaleString()}`,
+      icon: Percent,
+      color: "text-primary",
+    },
+    {
+      label: "Orders",
+      value: stats.totalOrders,
+      icon: ShoppingBag,
+    },
+    {
+      label: "Users",
+      value: stats.totalUsers,
+      icon: Users,
+    },
+    {
+      label: "Vendors",
+      value: stats.totalVendors,
+      icon: Store,
+    },
+  ];
+
   return (
-    <div className="space-y-6">
-      {/* Stats grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {stats.map((stat) => {
-          const Icon = stat.icon
+    <div className="space-y-8 p-6">
+
+      {/* =====================================================
+         STATS GRID
+      ===================================================== */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        {statCards.map((s) => {
+          const Icon = s.icon;
+
           return (
             <Card
-              key={stat.label}
-              className="p-6 bg-white border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200"
+              key={s.label}
+              className="p-6 flex items-center justify-between hover:shadow-md transition"
             >
-              <div className="flex items-start justify-between">
-                <div className="space-y-2">
-                  <p className="text-sm font-medium text-gray-500">{stat.label}</p>
-                  <p className="text-3xl font-semibold text-gray-900">{stat.value}</p>
-                  <p className="text-xs text-gray-500">{stat.change}</p>
-                </div>
-                <div className="w-12 h-12 rounded-lg bg-gray-50 flex items-center justify-center">
-                  <Icon className="w-6 h-6 text-gray-700" strokeWidth={2} />
-                </div>
+              <div>
+                <p className="text-sm text-muted-foreground">{s.label}</p>
+                <p className={`text-2xl font-bold ${s.color || ""}`}>
+                  {s.value}
+                </p>
+              </div>
+
+              <div className="p-3 rounded-xl bg-muted">
+                <Icon size={20} />
               </div>
             </Card>
-          )
+          );
         })}
       </div>
 
-      {/* Table placeholder */}
-      <Card className="p-6 bg-white border-gray-200 shadow-sm">
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">Recent Activity</h3>
-          <div className="border border-gray-200 rounded-lg overflow-hidden">
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    User
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Action
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Date
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                <tr className="hover:bg-gray-50 transition-colors duration-150">
-                  <td className="px-4 py-4 text-sm text-gray-900">John Smith</td>
-                  <td className="px-4 py-4 text-sm text-gray-600">New order placed</td>
-                  <td className="px-4 py-4">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700">
-                      Completed
-                    </span>
-                  </td>
-                  <td className="px-4 py-4 text-sm text-gray-500">2 hours ago</td>
-                </tr>
-                <tr className="hover:bg-gray-50 transition-colors duration-150">
-                  <td className="px-4 py-4 text-sm text-gray-900">Emma Wilson</td>
-                  <td className="px-4 py-4 text-sm text-gray-600">Product review submitted</td>
-                  <td className="px-4 py-4">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
-                      Pending
-                    </span>
-                  </td>
-                  <td className="px-4 py-4 text-sm text-gray-500">5 hours ago</td>
-                </tr>
-                <tr className="hover:bg-gray-50 transition-colors duration-150">
-                  <td className="px-4 py-4 text-sm text-gray-900">Michael Brown</td>
-                  <td className="px-4 py-4 text-sm text-gray-600">Vendor application</td>
-                  <td className="px-4 py-4">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700">
-                      Review
-                    </span>
-                  </td>
-                  <td className="px-4 py-4 text-sm text-gray-500">1 day ago</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+
+
+      {/* =====================================================
+         REVENUE CHART
+      ===================================================== */}
+      <Card className="p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="font-semibold text-lg">Revenue Overview</h3>
+
+          <select
+            value={range}
+            onChange={(e) => setRange(e.target.value)}
+            className="border rounded-lg px-3 py-1 text-sm cursor-pointer"
+          >
+            <option value="daily">Daily</option>
+            <option value="monthly">Monthly</option>
+          </select>
+        </div>
+
+        <div className="h-[300px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={revenueChart}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+              <YAxis />
+              <Tooltip />
+              <Line
+                type="monotone"
+                dataKey="revenue"
+                stroke="#8bf606"
+                strokeWidth={3}
+              />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       </Card>
 
-      {/* Empty state placeholder */}
-      <Card className="p-12 bg-white border-gray-200 shadow-sm">
-        <div className="text-center space-y-3">
-          <div className="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center mx-auto">
-            <ShoppingBag className="w-8 h-8 text-gray-400" strokeWidth={1.5} />
+
+
+      {/* =====================================================
+         TABLES
+      ===================================================== */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        {/* -------- Recent Orders -------- */}
+        <Card className="p-6">
+          <h3 className="font-semibold mb-4">Recent Orders</h3>
+
+          <div className="space-y-3">
+            {recentOrders.map((o) => (
+              <div
+                key={o._id}
+                className="flex justify-between border-b pb-2 text-sm"
+              >
+                <div>
+                  <p className="font-medium">{o.user?.name}</p>
+                  <p className="text-muted-foreground text-xs">
+                    {o.orderNumber}
+                  </p>
+                </div>
+
+                <div className="text-right">
+                  <p className="font-semibold">₹{o.totalAmount}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {o.paymentStatus}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
-          <h3 className="text-lg font-medium text-gray-900">No pending tasks</h3>
-          <p className="text-sm text-gray-500 max-w-sm mx-auto">
-            All systems running smoothly. Check back later for updates.
-          </p>
-        </div>
-      </Card>
+        </Card>
+
+
+
+        {/* -------- Pending Vendors -------- */}
+        <Card className="p-6">
+          <h3 className="font-semibold mb-4">
+            Pending Vendor Requests
+          </h3>
+
+          <div className="space-y-3">
+            {recentVendors.map((v) => (
+              <div
+                key={v._id}
+                className="flex justify-between border-b pb-2 text-sm"
+              >
+                <div>
+                  <p className="font-medium">{v.storeName}</p>
+                  <p className="text-muted-foreground text-xs">{v.email}</p>
+                </div>
+
+                <span className="text-yellow-600 font-medium">
+                  Pending
+                </span>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+      </div>
     </div>
-  )
+  );
 }

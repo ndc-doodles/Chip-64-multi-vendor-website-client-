@@ -90,10 +90,7 @@ export default function SellerOrderLayout() {
               <h1 className="text-4xl font-black text-[#39b02c] mt-1">Order Pipeline</h1>
               <p className="text-gray-500 text-sm mt-2 font-medium">Track and fulfill vendor-specific items</p>
             </div>
-            <div className="flex items-center gap-2 bg-white p-1.5 rounded-2xl border border-gray-100 shadow-sm">
-               <button className="px-4 py-2 text-xs font-bold bg-[#39b02c] text-white rounded-xl shadow-md shadow-[#39b02c]/20">Active Orders</button>
-               <button className="px-4 py-2 text-xs font-bold text-gray-400 hover:text-gray-600 transition-colors">Archived</button>
-            </div>
+        
           </div>
 
           {/* STATUS CARDS GRID */}

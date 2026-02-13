@@ -54,7 +54,7 @@ const CategoryGrid = () => {
               Various kinds of smartphones & gadgets
             </p>
 
-            <button className="mr-2 md:mr-0  md:left-0 absolute mt-3 md:mt-6 bg-primary text-black px-2 md:px-6 py-0.5 md:py-3 rounded-lg md:rounded-xl text-[10px] md:text-base font-medium shadow-md">
+            <button className="mr-2 md:mr-0  md:left-0 absolute mt-3 md:mt-6 bg-primary text-black px-2 md:px-6 py-0.5 md:py-3 rounded-lg md:rounded-xl text-[10px] md:text-base font-medium shadow-md cursor-pointer">
               Shop Now
             </button>
           </div>
@@ -92,7 +92,7 @@ const CategoryGrid = () => {
                 All types of CCTV cameras
             </p>
 
-            <button className="mt-2 md:mt-4 bg-primary text-black md:px-3 px-2 py md:py-1 rounded-md md:rounded-lg text-xs md:text-base font-medium">
+            <button className="mt-2 md:mt-4 bg-primary text-black md:px-3 px-2 py md:py-1 rounded-md md:rounded-lg text-xs md:text-base font-medium cursor-pointer">
               Shop Now
             </button>
           </div>
@@ -122,7 +122,7 @@ const CategoryGrid = () => {
               <span className="absolute left-7.5 z-1">Buy</span> <br/>
               <span className="text-primary md:text-7xl  text-3xl left-[16px]   md:left-0 absolute z-0">CPUs</span>
             </p>
-                 <button className=" whitespace-nowrap  mt-10 md:mt-4 bg-primary text-black px-2 md:px-4 py-1 rounded-md md:rounded-lg text-[6px] md:text-base  font-medium absolute  top-11 md: md:top-35 left-9.5 md:left-12">
+                 <button className=" whitespace-nowrap  mt-10 md:mt-4 bg-primary text-black px-2 md:px-4 py-1 rounded-md md:rounded-lg text-[6px] md:text-base  font-medium absolute  top-11 md: md:top-35 left-9.5 md:left-12 cursor-pointer">
               Shop Now
             </button>
           </div>

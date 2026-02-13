@@ -189,3 +189,8 @@ export const approvePayoutRequestApi = async (requestId) => {
   });
   return res.data;
 };
+
+export const fetchDashboardApi=async(range="daily")=>{
+   const res=await api.get(`/admin/dashboard/overview?range=${range}`)
+   return res.data
+}

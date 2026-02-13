@@ -21,7 +21,7 @@ export default function VariantSelector({
               key={color}
               type="button"
               onClick={() => onSelect(color)}
-              className="relative"
+              className="relative cursor-pointer"
             >
               <div
                 className={`w-11 h-11 rounded-full border-2 transition-all

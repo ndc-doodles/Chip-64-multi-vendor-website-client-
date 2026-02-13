@@ -22,7 +22,7 @@ const VendorSidebar = ({
   const menuItems = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, path: "/seller/dashboard" },
     { id: "orders", label: "Orders", icon: ShoppingBag, path: "/seller/orders" },
-    { id: "products", label: "Products", icon: Package, path: "/vendor/product" },
+    { id: "products", label: "Products", icon: Package, path: "/seller/product" },
     { id: "settings", label: "Settings", icon: Settings, path: "/seller/settings" },
     {id:"wallet",label:"Wallet",icon:Wallet,path:"/seller/wallet"}
   ];
@@ -46,7 +46,7 @@ const VendorSidebar = ({
 
   const handleLogout = () => {
     dispatch({ type: "VENDOR_LOGOUT" });
-    navigate("/vendor");
+    navigate("/seller");
   };
 
   return (

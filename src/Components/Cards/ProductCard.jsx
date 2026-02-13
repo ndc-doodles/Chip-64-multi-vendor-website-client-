@@ -123,7 +123,7 @@ const handleAddToCart = async (e) => {
   }));
 }}
 
-  className="absolute top-2 right-2 z-10"
+  className="absolute top-2 right-2 z-10 cursor-pointer"
 >
   <Heart
     className={`w-5 h-5 transition-all duration-200 ${
@@ -190,7 +190,7 @@ const handleAddToCart = async (e) => {
         {/* ADD TO CART */}
      <Button
   size="sm"
-  className="w-full bg-primary rounded-2xl text-black text-xs h-8  hover:bg-secondary-foreground hover:text-primary"
+  className="w-full bg-primary rounded-2xl text-black text-xs h-8  hover:bg-secondary-foreground hover:text-primary cursor-pointer"
   disabled={isOutOfStock}
   onClick={handleAddToCart}
 >

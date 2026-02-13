@@ -55,7 +55,7 @@ className="
   hover:border-[#8DB600]/30
 
   active:shadow-[0_20px_50px_rgba(141,182,0,0.15)]
-  active:border-[#8DB600]/30
+  active:border-[#8DB600]/30 cursor-pointer
 "
     >
       <div className="flex items-center justify-between">
@@ -106,7 +106,7 @@ Hello,{" "}
          {user ? (
   <button
     onClick={logout}
-    className="flex items-center gap-2 text-xs font-semibold text-gray-400 hover:text-red-500 transition-colors uppercase tracking-wider"
+    className="flex items-center gap-2 text-xs font-semibold text-gray-400 hover:text-red-500 transition-colors uppercase tracking-wider cursor-pointer"
   >
     <LogOut size={14} />
     Sign Out
@@ -129,7 +129,7 @@ Hello,{" "}
             { label: "Wishlist", val: wishlistItemsCount, color: "text-[#8DB600]" },
             { label: "Addresses", val: stats.addressCount, color: "text-gray-900" }
           ].map((stat, i) => (
-            <div key={i} className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
+            <div key={i} className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm cursor-pointer">
               <p className={`text-2xl font-bold ${stat.color}`}>{stat.val}</p>
               <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mt-1">{stat.label}</p>
             </div>
@@ -170,7 +170,7 @@ Hello,{" "}
                 <h3 className="font-bold text-lg text-black">Need any help?</h3>
                 <p className="text-black text-sm">Our support team is available 24/7</p>
             </div>
-            <button className="relative z-10 bg-white text-black px-5 py-2 rounded-full text-sm font-bold hover:bg-gray-100 transition-colors">
+            <button className="relative z-10 bg-white text-black px-5 py-2 rounded-full text-sm font-bold hover:bg-gray-100 transition-colors cursor-pointer" onClick={()=>navigate("/contact")}>
                 Contact Us
             </button>
             {/* Decorative Circle */}

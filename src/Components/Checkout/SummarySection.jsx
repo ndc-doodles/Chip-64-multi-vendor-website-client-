@@ -145,7 +145,7 @@ export default function SummarySection({
         </div>
 <Button
   size="lg"
-  className="hidden lg:flex w-full gap-2"
+  className="hidden lg:flex w-full gap-2 cursor-pointer"
   onClick={onPlaceOrder}
 >
           <CheckCircle2 className="h-5 w-5" />

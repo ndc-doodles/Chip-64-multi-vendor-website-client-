@@ -321,7 +321,8 @@ const handleBuyNow = async () => {
                 <button
                   onClick={() => handleQuantityChange(-1)}
                   disabled={quantity <= 1}
-                  className="p-2 hover:bg-muted"
+                  className="p-2 hover:bg-muted
+                  cursor-pointer"
                 >
                   <Minus className="w-4 h-4" />
                 </button>
@@ -335,7 +336,7 @@ const handleBuyNow = async () => {
                 <button
                   onClick={() => handleQuantityChange(1)}
                   disabled={quantity >= activeVariant.stock}
-                  className="p-2 hover:bg-muted"
+                  className="p-2 hover:bg-muted cursor-pointer"
                 >
                   <Plus className="w-4 h-4" />
                 </button>
@@ -354,12 +355,12 @@ const handleBuyNow = async () => {
       ${activeVariant.stock === 0 
         ? "bg-gray-100 text-gray-400 cursor-not-allowed" 
         : "bg-primary text-black hover:text-primary hover:bg-secondary-foreground  hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.3)] active:scale-[0.98]"}
-    `}
+    cursor-pointer`}
   >
     {/* Subtle Inner Glow Effect */}
     <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
     
-    <ShoppingCart className="w-5 h-5 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-primary" strokeWidth={2.5} />
+    <ShoppingCart className="w-5 h-5 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-primary " strokeWidth={2.5} />
     <span className="relative z-10  ">Add to Cart</span>
   </Button>
 
@@ -374,6 +375,7 @@ const handleBuyNow = async () => {
    active:scale-[0.98]
     disabled:opacity-20 disabled:grayscale
     hover:bg-primary hover:text-secondary-foreground
+    cursor-pointer
   "
 >
   Buy Now

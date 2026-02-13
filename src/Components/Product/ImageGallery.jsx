@@ -42,7 +42,7 @@ export default function ImageGallery({
           }}
           className="absolute top-4 right-4 z-10 w-11 h-11 rounded-full 
                      bg-white/80 backdrop-blur flex items-center justify-center
-                     shadow-sm hover:scale-105 transition"
+                     shadow-sm hover:scale-105 transition cursor-pointer"
           aria-label="Add to wishlist"
         >
           <Heart

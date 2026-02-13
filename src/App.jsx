@@ -59,6 +59,7 @@ import AdminPayoutRequestPage from "./Admin/Pages/Payout/AdminPayoutRequest";
 import About from "./Pages/About/About";
 import ContactPage from "./Pages/Contact/ContactPage";
 import GlobalAuthModal from "./Components/AuthModal/GlobalAuthModal";
+import GuestRoute from "./Routes/GuestRoute";
 function App() {
   const dispatch = useDispatch();
 const user = useSelector((state) => state.user.user);
@@ -77,8 +78,8 @@ useEffect(() => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<GuestRoute type="user"><LoginPage /></GuestRoute>} />
+        <Route path="/register" element={<GuestRoute type="user"><RegisterPage /></GuestRoute>} />
         <Route path="/verify-otp" element={<VerifyOtpPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
@@ -135,13 +136,13 @@ useEffect(() => {
         </ProtectedRoute>
           }/>
         <Route path="/security" element={<SecurityPrivacy/>}/>
-        <Route path="/vendor" element={<VendorLoginPage />} />
+        <Route path="/seller" element={<GuestRoute type="vendor"><VendorLoginPage /></GuestRoute>} />
         <Route path="/security/change-password" element={<ChangePassword/>}/>
         <Route path="/security/sessions" element={<SecuritySessions/>}/>
       
         
         <Route
-          path="/vendor/product"
+          path="/seller/product"
           element={
               <ProductsPage />
           }
@@ -151,7 +152,7 @@ useEffect(() => {
   path="/seller/application-status"
   element={<SellerApplicationStatus />}
 />
-        <Route path="/admin" element={<AdminLogin/>}/>
+        <Route path="/admin" element={<GuestRoute type="admin"><AdminLogin/></GuestRoute>}/>
         <Route path="/admin/dashboard" element={<AdminDashboardPage/>}/>
         <Route path="/admin/category" element={<AdminCategoriesPage/>}/>
         <Route path="/admin/users" element={<AdminUserPage/>}/>

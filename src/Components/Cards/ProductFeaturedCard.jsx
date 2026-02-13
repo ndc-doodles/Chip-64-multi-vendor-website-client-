@@ -105,13 +105,13 @@ export default function ProductCard({
           }}
 
 
-          className="absolute top-2 right-2 md:top-4 md:right-4 z-20 rounded-full bg-white/80 dark:bg-black/40 backdrop-blur-md p-1.5 md:p-2.5 shadow-md"
+          className="absolute top-2 right-2 md:top-4 md:right-4 z-20 rounded-full bg-white/80 dark:bg-black/40 backdrop-blur-md p-1.5 md:p-2.5 shadow-md cursor-pointer"
         >
 
           <motion.div whileTap={{ scale: 0.85 }}>
             <Heart
               size={14}            /* mobile */
-              className={loved ? "fill-red-500 text-red-500" : "text-foreground/70 md:size-[18px]"}
+              className={loved ? "fill-red-500 text-red-500" : "text-foreground/70 md:size-[18px] "}
             />
           </motion.div>
         </button>
@@ -167,6 +167,7 @@ export default function ProductCard({
                 flex items-center justify-center gap-2
                 shadow-[0_20px_40px_rgba(230,248,94,0.35)]
                 hover:shadow-[0_25px_60px_rgba(230,248,94,0.45)]
+                cursor-pointer
               "
               >
                 <ShoppingBag size={14} className="md:size-[18px]" />

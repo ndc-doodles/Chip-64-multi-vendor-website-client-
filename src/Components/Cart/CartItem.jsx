@@ -59,7 +59,7 @@ export default function CartItem({
             rounded-full
             text-gray-400
             hover:bg-red-50 hover:text-red-600
-            transition
+            transition cursor-pointer
           "
         >
           <Trash2 size={16} />
@@ -96,7 +96,7 @@ export default function CartItem({
             {/* 🔥 QTY with smooth animation */}
             <div className="flex items-center gap-2 border rounded-full px-3 py-1">
 
-              <button onClick={onDecrease}>
+              <button onClick={onDecrease} className="cursor-pointer">
                 <Minus size={14} />
               </button>
 
@@ -110,7 +110,7 @@ export default function CartItem({
                 {item.quantity}
               </motion.span>
 
-              <button onClick={onIncrease}>
+              <button onClick={onIncrease} className="cursor-pointer">
                 <Plus size={14} />
               </button>
             </div>
