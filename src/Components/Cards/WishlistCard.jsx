@@ -67,6 +67,8 @@ const specs = getDisplayAttributes(item.category, item.attributes);
       {/* Content */}
       <div className="px-4 pb-5 pt-0.5 space-y-1">
         <h3 className=" text-xl font-medium ">{item.name}</h3>
+                <h2 className=" text-sm font-medium ">{item.price}</h2>
+
         {specs.length > 0 && (
   <p className="text-xs text-gray-500">
     {specs.join(" • ")}

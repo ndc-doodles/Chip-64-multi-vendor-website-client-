@@ -4,6 +4,9 @@ import HeaderLayout from "@/Layout/Header/HeaderLayout"
 import { WishlistCard } from "@/Components/Cards/WishlistCard"
 import { useEffect, useState } from "react"
 import { getWishlistApi } from "@/API/userAPI"
+import { useSelector } from "react-redux"
+import { fetchCart } from "@/redux/actions/cartActions"
+import { addToCart } from "@/API/userAPI"
 import { toast } from "sonner"
 import { useDispatch } from "react-redux"
 import { fetchWishlist } from "@/redux/actions/wishlistActions"
@@ -12,6 +15,7 @@ import { ShoppingCart, Heart } from "lucide-react"
 export default function WishlistPage() {
   const [wishlistItems, setWishlistItems] = useState([])
   const dispatch = useDispatch()
+const { user, accessToken } = useSelector((s) => s.user)
 
   const refreshWishlist = async () => {
     try {
@@ -22,10 +26,41 @@ export default function WishlistPage() {
       toast.error("Failed to load wishlist")
     }
   }
+  const handleAddAllToCart = async () => {
+  try {
+    if (!user || !accessToken) {
+      toast.error("Please login first")
+      return
+    }
+
+    for (const item of wishlistItems) {
+      await addToCart({
+        productId: item.productId,
+        variantId: item.variantId,
+        vendorId: item.vendorId,
+        name: item.name,
+        slug: item.slug,
+        image: item.image,
+        price: item.price,
+        attributes: item.attributes,
+        qty: 1,
+      })
+    }
+
+    dispatch(fetchCart())
+
+    toast.success("All items added to cart")
+
+  } catch {
+    toast.error("Failed to add items")
+  }
+}
+
 
   useEffect(() => {
     refreshWishlist()
   }, [])
+
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">
@@ -77,6 +112,7 @@ export default function WishlistPage() {
                 hover:scale-105
                 transition
               "
+              onClick={handleAddAllToCart}
             >
               <ShoppingCart size={18} />
               Add All To Cart
